@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.system.model;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -24,64 +25,104 @@ public class User extends Model<User> {
     /**
      * 主键id
      */
-	@TableId(value="id", type= IdType.AUTO)
-	private Integer id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
     /**
      * 头像
      */
-	private String avatar;
+    private String avatar;
     /**
      * 账号
      */
-	private String account;
+    private String account;
     /**
      * 密码
      */
-	private String password;
+    private String password;
     /**
      * md5密码盐
      */
-	private String salt;
+    private String salt;
     /**
      * 名字
      */
-	private String name;
+    private String name;
     /**
      * 生日
      */
-	private Date birthday;
+    private Date birthday;
     /**
      * 性别（1：男 2：女）
      */
-	private Integer sex;
+    private Integer sex;
     /**
      * 电子邮件
      */
-	private String email;
+    private String email;
     /**
      * 电话
      */
-	private String phone;
+    private String phone;
     /**
      * 角色id
      */
-	private String roleid;
+    private String roleid;
     /**
      * 部门id
      */
-	private Integer deptid;
+    private Integer deptid;
     /**
      * 状态(1：启用  2：冻结  3：删除）
      */
-	private Integer status;
+    private Integer status;
     /**
      * 创建时间
      */
-	private Date createtime;
+    private Date createtime;
+    /**
+     * 权限
+     */
+    private String rights;
+    /**
+     * 最后登录时间
+     */
+    @TableField("last_login")
+    private Date lastLogin;
+    /**
+     * 关系
+     */
+    private String bz;
+    /**
+     * 皮肤
+     */
+    private String skin;
+    /**
+     * 拥有的游戏权限
+     */
+    @TableField("game_ids")
+    private String gameIds;
+    /**
+     * wx
+     */
+    private String wx;
+    /**
+     * 反水百分比
+     */
+    private Integer rate;
+    /**
+     * 游戏ID
+     */
+    @TableField("game_account_id")
+    private Integer gameAccountId;
+    /**
+     * 上级代理id
+     */
+    @TableField("parent_id")
+    private Integer parentId;
     /**
      * 保留字段
      */
-	private Integer version;
+    private Integer version;
 
 
 	public Integer getId() {
@@ -178,6 +219,78 @@ public class User extends Model<User> {
 
 	public void setDeptid(Integer deptid) {
 		this.deptid = deptid;
+	}
+
+	public String getRights() {
+		return rights;
+	}
+
+	public void setRights(String rights) {
+		this.rights = rights;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getBz() {
+		return bz;
+	}
+
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+
+	public String getSkin() {
+		return skin;
+	}
+
+	public void setSkin(String skin) {
+		this.skin = skin;
+	}
+
+	public String getGameIds() {
+		return gameIds;
+	}
+
+	public void setGameIds(String gameIds) {
+		this.gameIds = gameIds;
+	}
+
+	public String getWx() {
+		return wx;
+	}
+
+	public void setWx(String wx) {
+		this.wx = wx;
+	}
+
+	public Integer getRate() {
+		return rate;
+	}
+
+	public void setRate(Integer rate) {
+		this.rate = rate;
+	}
+
+	public Integer getGameAccountId() {
+		return gameAccountId;
+	}
+
+	public void setGameAccountId(Integer gameAccountId) {
+		this.gameAccountId = gameAccountId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
 	public Integer getStatus() {

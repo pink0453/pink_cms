@@ -5,34 +5,37 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.stylefeng.guns.modular.system.model.User">
 		<id column="id" property="id" />
-		<result column="avatar" property="avatar" />
-		<result column="account" property="account" />
-		<result column="password" property="password" />
-		<result column="salt" property="salt" />
-		<result column="name" property="name" />
-		<result column="birthday" property="birthday" />
-		<result column="sex" property="sex" />
-		<result column="email" property="email" />
-		<result column="phone" property="phone" />
-		<result column="roleid" property="roleid" />
-		<result column="deptid" property="deptid" />
-		<result column="status" property="status" />
-		<result column="createtime" property="createtime" />
-		<result column="version" property="version" />
+        <result column="avatar" property="avatar" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="name" property="name" />
+        <result column="birthday" property="birthday" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="roleid" property="roleid" />
+        <result column="deptid" property="deptid" />
+        <result column="status" property="status" />
+        <result column="createtime" property="createtime" />
+        <result column="rights" property="rights" />
+        <result column="last_login" property="lastLogin" />
+        <result column="bz" property="bz" />
+        <result column="skin" property="skin" />
+        <result column="game_ids" property="gameIds" />
+        <result column="wx" property="wx" />
+        <result column="rate" property="rate" />
+        <result column="game_account_id" property="gameAccountId" />
+        <result column="parent_id" property="parentId" />
+        <result column="version" property="version" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, account, name, birthday, sex, email, avatar,
-		phone, roleid,
-		deptid, status,
-		createtime, version
+		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version
 	</sql>
 
 	<sql id="Base_Column_List_With_Pwd">
-		id, account, name, birthday,password, sex, email, avatar,
-		phone, roleid,salt,
-		deptid, status,
-		createtime, version
+		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version
 	</sql>
 
 	<select id="selectUsers" resultType="map">

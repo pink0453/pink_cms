@@ -2,6 +2,10 @@ package com.stylefeng.guns.modular.system.transfer;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.util.Date;
 
 /**
@@ -29,7 +33,93 @@ public class UserDto{
 	private Date createtime;
 	private Integer version;
 	private String avatar;
+	
+	
+    private String rights;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date lastLogin;
+    private String bz;
+    private String skin;
+    private String gameIds;
+    private String wx;
+    private Integer rate;
+    private Integer gameAccountId;
+    private Integer parentId;
+	
+	
 
+
+	public String getRights() {
+		return rights;
+	}
+
+	public void setRights(String rights) {
+		this.rights = rights;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getBz() {
+		return bz;
+	}
+
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+
+	public String getSkin() {
+		return skin;
+	}
+
+	public void setSkin(String skin) {
+		this.skin = skin;
+	}
+
+	public String getGameIds() {
+		return gameIds;
+	}
+
+	public void setGameIds(String gameIds) {
+		this.gameIds = gameIds;
+	}
+
+	public String getWx() {
+		return wx;
+	}
+
+	public void setWx(String wx) {
+		this.wx = wx;
+	}
+
+	public Integer getRate() {
+		return rate;
+	}
+
+	public void setRate(Integer rate) {
+		this.rate = rate;
+	}
+
+	public Integer getGameAccountId() {
+		return gameAccountId;
+	}
+
+	public void setGameAccountId(Integer gameAccountId) {
+		this.gameAccountId = gameAccountId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
 
 	public Integer getId() {
 		return id;
