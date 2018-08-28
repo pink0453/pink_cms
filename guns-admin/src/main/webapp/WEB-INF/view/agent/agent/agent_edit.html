@@ -1,0 +1,57 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="agentInfoForm">
+
+			<input type="hidden" id="id" value="${item.id}">
+			<input type="hidden" id="sexValue" value="${item.sex}">
+			<input type="hidden" id="roleValue" value="${item.roleid}">
+			<input type="hidden" id="rateValue" value="${item.rate}">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                
+                <#input id="account" name="账号" underline="true" value="${item.account}"/>
+	                <#select id="roleid" name="代理等级" underline="true">
+						<option value="6">钻石</option>
+						<option value="7">黄金</option>
+						<option value="9">白金</option>
+						<option value="10">白银</option>
+					</#select>
+	                <#input id="name" name="名字" underline="true" value="${item.name}"/>
+	                <#input id="birthday" name="生日" underline="true" value="${item.birthday}"/>
+	                <#input id="email" name="电子邮件" underline="true" value="${item.email}"/>
+	                <#input id="parentId" name="上级代理id" underline="true" value="${item.parentId}"/>
+                
+                </div>
+
+                <div class="col-sm-6">
+                
+                <#input id="gameAccountId" name="游戏ID" underline="true" value="${item.gameAccountId}"/>            
+                	<#select id="rate" name="反水百分比" underline="true">
+						<option value="40">40%</option>
+						<option value="50">50%</option>
+						<option value="60">60%</option>
+						<option value="70">70%</option>
+					</#select>
+					<#select id="sex" name="性别" underline="true">
+						<option value="1">男</option>
+						<option value="2">女</option>
+					</#select>
+                    <#input id="phone" name="电话" underline="true" value="${item.phone}"/>
+                
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="AgentInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="AgentInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/agent/agent/agent_info.js"></script>
+@}
