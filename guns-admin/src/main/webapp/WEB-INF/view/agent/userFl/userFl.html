@@ -1,0 +1,38 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>代理返利明细管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#NameCon id="condition" name="名称" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="UserFl.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="UserFlTableToolbar" role="group">
+                            @if(shiro.hasPermission("/userFl/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="UserFl.openAddUserFl()"/>
+                            @}
+                            @if(shiro.hasPermission("/userFl/update")){
+                                <#button name="修改" icon="fa-edit" clickFun="UserFl.openUserFlDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/userFl/delete")){
+                                <#button name="删除" icon="fa-remove" clickFun="UserFl.delete()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="UserFlTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/agent/userFl/userFl.js"></script>
+@}
