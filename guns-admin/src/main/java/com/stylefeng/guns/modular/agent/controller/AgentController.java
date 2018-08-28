@@ -66,8 +66,8 @@ public class AgentController extends BaseController {
     /**
      * 跳转到修改
      */
-    @RequestMapping("/agent_update/{agentId}")
     @Permission
+    @RequestMapping("/agent_update/{agentId}")
     public String agentUpdate(@PathVariable Integer agentId, Model model) {
         User agent = agentService.selectById(agentId);
         model.addAttribute("item",agent);
