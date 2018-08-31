@@ -28,6 +28,19 @@ import java.util.Date;
 
 public class DateUtil {
 
+	/**
+	 * 转换long类型时间
+	 * @param stamp
+	 * @return
+	 */
+	public static String fomatLongDateHHmmss(Long stamp) {
+		String time;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date(stamp*1000);
+		time = simpleDateFormat.format(date);
+		return time;
+	}
+	
     /**
      * 获取YYYY格式
      */
