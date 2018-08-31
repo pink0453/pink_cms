@@ -1,6 +1,11 @@
 package com.stylefeng.guns.modular.agent.service.impl;
 
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
+import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
+import com.stylefeng.guns.modular.system.model.Mj_players;
+import com.stylefeng.guns.modular.system.mongoDao.UserFlDao;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,5 +18,31 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserFlServiceImpl implements IUserFlService {
+
+	@Autowired
+	private UserFlDao userFlDao;
+	
+	@Override
+	public List<Mj_agent_fl> getAll() {
+		// TODO Auto-generated method stub
+		
+		List<Mj_agent_fl> userFls = userFlDao.findAll();
+		
+		return userFls;
+	}
+
+	@Override
+	public void insert(Mj_agent_fl mjAgentFl) {
+		// TODO Auto-generated method stub
+		userFlDao.insert(mjAgentFl);
+	}
+
+	@Override
+	public List<Mj_agent_fl> getFlByCurUser(Mj_players player, Integer type) {
+		// TODO Auto-generated method stub
+		
+		List<Mj_agent_fl> afs = userFlDao.findByPlayerIdAndType(player.get_id(), type);
+		return afs;
+	}
 
 }

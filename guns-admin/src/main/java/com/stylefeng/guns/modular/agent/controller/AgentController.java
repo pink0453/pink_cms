@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.stylefeng.guns.core.log.LogObjectHolder;
 import com.stylefeng.guns.core.shiro.ShiroKit;
+import com.stylefeng.guns.core.shiro.ShiroUser;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.stylefeng.guns.modular.agent.service.IPlayerService;
 import com.stylefeng.guns.modular.system.factory.UserFactory;
+import com.stylefeng.guns.modular.system.model.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 import com.stylefeng.guns.modular.system.transfer.UserDto;
@@ -46,6 +50,10 @@ public class AgentController extends BaseController {
 
     @Autowired
     private IUserService agentService;
+    @Autowired
+    private IPlayerService playerService;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 跳转到首页
@@ -83,16 +91,50 @@ public class AgentController extends BaseController {
     @Permission
     public Object list(@RequestParam(required = false) String name, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime, @RequestParam(required = false) Integer deptid) {
     	
-//    	List<Map<String, Object>> users = agentService.selectUsers(null, name, beginTime, endTime, deptid);
-//        return new UserWarpper(users).warp();
-        
         if (ShiroKit.isAdmin()) {
             List<Map<String, Object>> users = agentService.selectUsers(null, name, beginTime, endTime, deptid);
+            
+            for(Map<String, Object> user : users) {
+            	
+            	Integer gameAccount = (Integer) user.get("game_account_id");
+            	List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<Mj_players>(), gameAccount);
+            	user.put("playersCount", players.size());
+            	
+            }
+            
             return new UserWarpper(users).warp();
         } else {
-            DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-            List<Map<String, Object>> users = agentService.selectUsers(dataScope, name, beginTime, endTime, deptid);
-            return new UserWarpper(users).warp();
+            
+            ShiroUser suser = ShiroKit.getUser();
+    		User currentUser = userService.selectById(suser.getId());
+    		
+    		List<User> allUser = userService.getUsersByCurrentUser(new ArrayList<>(), currentUser.getId());
+            List<Integer> ids = new ArrayList<Integer>();
+    		for(User user : allUser) {
+    			
+    			ids.add(user.getId());
+    			
+    		}
+    		
+    		if(ids.size() > 0) {
+    			
+    			List<Map<String, Object>> allMapUsers = agentService.getUsersByids(ids);
+                for(Map<String, Object> user : allMapUsers) {
+                	
+                	Integer gameAccount = (Integer) user.get("gameAccountId");
+                	List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<Mj_players>(), gameAccount);
+                	user.put("playersCount", players.size());
+                	
+                }
+                
+                return new UserWarpper(allMapUsers).warp();
+    			
+    		}else {
+    			
+    			return "";
+    			
+    		}
+    		
         }
     	
     }
@@ -122,6 +164,10 @@ public class AgentController extends BaseController {
         agent.setCreatetime(new Date());
         agent.setDeptid(28);//默认新增代理部门为代理部
         
+        ShiroUser suser = ShiroKit.getUser();
+		User currentUser = userService.selectById(suser.getId());
+		agent.setParentId(currentUser.getId());
+		
         this.agentService.insert(UserFactory.createUser(agent));
 //        agentService.insert(agent);
         

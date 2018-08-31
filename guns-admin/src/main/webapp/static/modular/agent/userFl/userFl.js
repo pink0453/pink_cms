@@ -14,7 +14,14 @@ var UserFl = {
 UserFl.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-            {title: '', field: 'id', visible: true, align: 'center', valign: 'middle'}
+            {title: '代理ID', field: 'aid', visible: true, align: 'center', valign: 'middle'},
+            {title: '代理等级', field: 'lv', visible: true, align: 'center', valign: 'middle'},
+            {title: '玩家ID', field: 'playerId', visible: true, align: 'center', valign: 'middle'},
+            {title: '玩家昵称', field: 'playerName', visible: true, align: 'center', valign: 'middle'},
+            {title: '返利金额', field: 'money', visible: true, align: 'center', valign: 'middle'},
+            {title: '上级代理', field: 'pid', visible: true, align: 'center', valign: 'middle'},
+            {title: '创建时间', field: 'timeStr', visible: true, align: 'center', valign: 'middle'}
+        
     ];
 };
 

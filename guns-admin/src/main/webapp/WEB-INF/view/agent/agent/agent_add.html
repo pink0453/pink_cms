@@ -8,25 +8,40 @@
 	                <#input id="account" name="账号" underline="true"/>
 	                <#input id="password" name="密码" underline="true" type="password"/>
 	                <#select id="roleid" name="代理等级" underline="true">
-						<option value="6">钻石</option>
-						<option value="7">黄金</option>
-						<option value="9">白金</option>
-						<option value="10">白银</option>
+						@if(shiro.hasAnyRoles("admin,administrator,zuanshi")){
+                        	<option value="12">钻石</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,baijin")){
+                        	<option value="13">白金</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,baijin,huangjin")){
+                        	<option value="14">黄金</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,huangjin,baijin,baiyin")){
+                        	<option value="15">白银</option>
+                        @}
 					</#select>
 	                <#input id="name" name="名字" underline="true"/>
 	                <#input id="birthday" name="生日" underline="true"/>
 	                <#input id="email" name="电子邮件" underline="true"/>
-	                <#input id="parentId" name="上级代理id" underline="true"/>
                 </div>
 
                 <div class="col-sm-6">
                 	<#input id="gameAccountId" name="游戏ID" underline="true"/>            
                     <#input id="rePassword" name="确认密码" type="password" underline="true"/>        
                 	<#select id="rate" name="反水百分比" underline="true">
-						<option value="40">40%</option>
-						<option value="50">50%</option>
-						<option value="60">60%</option>
-						<option value="70">70%</option>
+                		@if(shiro.hasAnyRoles("admin,administrator,zuanshi")){
+                        	<option value="70">70%</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,baijin")){
+                        	<option value="60">60%</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,baijin,huangjin")){
+                        	<option value="50">50%</option>
+                        @}
+                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,huangjin,baijin,baiyin")){
+                        	<option value="40">40%</option>
+                        @}
 					</#select>
 					<#select id="sex" name="性别" underline="true">
 						<option value="1">男</option>

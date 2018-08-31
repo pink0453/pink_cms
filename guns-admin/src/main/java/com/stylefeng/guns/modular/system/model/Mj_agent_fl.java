@@ -2,13 +2,13 @@ package com.stylefeng.guns.modular.system.model;
 
 /**
  * <p>
- * 代理返利
+ * 代理,玩家返利
  * </p>
  *
  * @author stylefeng
  * @since 2018-08-29
  */
-public class UserFl {
+public class Mj_agent_fl {
 
     private int id;
 	private int aid;
@@ -23,10 +23,17 @@ public class UserFl {
 	
 	private String playerName;
 	private Integer playerId;
+	private Integer type;//0:玩家返利 1:代理返利
 	
 	private String timeStr;
 	
 	
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
 	public String getPlayerName() {
 		return playerName;
 	}

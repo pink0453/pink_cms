@@ -7,6 +7,7 @@ import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,4 +46,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public User getByAccount(String account) {
         return this.baseMapper.getByAccount(account);
     }
+
+	@Override
+	public User getByGameAccountId(String gameAccountId) {
+		// TODO Auto-generated method stub
+		 return this.baseMapper.getByGameAccountId(gameAccountId);
+	}
+
+	@Override
+	public List<User> getUsersByCurrentUser(List<User> allUsers, Integer curId) {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> conMap = new HashMap<String, Object>();
+		conMap.put("parent_id", curId);
+		List<User> users = this.selectByMap(conMap);
+		
+		allUsers.addAll(users);
+		for(User user : users) {
+			
+			getUsersByCurrentUser(allUsers, user.getId());
+			
+		}
+		
+		return allUsers;
+	}
+
+	@Override
+	public List<Map<String, Object>> getUsersByids(List<Integer> ids) {
+		// TODO Auto-generated method stub
+		
+		return this.baseMapper.selectUsersByIds(ids);
+		
+	}
 }

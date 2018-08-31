@@ -1,7 +1,9 @@
 package com.stylefeng.guns.modular.agent.service;
 
-import com.stylefeng.guns.modular.system.model.UserFl;
-import com.baomidou.mybatisplus.service.IService;
+import java.util.List;
+
+import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
+import com.stylefeng.guns.modular.system.model.Mj_players;
 
 /**
  * <p>
@@ -13,4 +15,13 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IUserFlService {
 
+	/**
+	 * 查询所有
+	 * @return
+	 */
+	public List<Mj_agent_fl> getAll();
+	public void insert(Mj_agent_fl mjAgentFl);
+	
+	public List<Mj_agent_fl> getFlByCurUser(Mj_players player, Integer type);
+	
 }

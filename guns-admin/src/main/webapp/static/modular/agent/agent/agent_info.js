@@ -39,6 +39,41 @@ var AgentInfoDlg = {
                 }
             }
         },
+        roleid: {
+            validators: {
+                notEmpty: {
+                    message: '代理等级不能为空'
+                }
+            }
+        },
+        sex: {
+            validators: {
+                notEmpty: {
+                    message: '性别不能为空'
+                }
+            }
+        },
+        createtime: {
+            validators: {
+                notEmpty: {
+                    message: '创建时间不能为空'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'email不能为空'
+                }
+            }
+        },
+        birthday: {
+            validators: {
+                notEmpty: {
+                    message: '生日不能为空'
+                }
+            }
+        },
         password: {
             validators: {
                 notEmpty: {

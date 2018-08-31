@@ -3,6 +3,9 @@ package com.stylefeng.guns.modular.system.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.stylefeng.guns.core.datascope.DataScope;
 import com.stylefeng.guns.modular.system.model.User;
+
+import io.swagger.models.auth.In;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -42,5 +45,22 @@ public interface IUserService extends IService<User> {
      * 通过账号获取用户
      */
     User getByAccount(@Param("account") String account);
+    
+    /**
+     * 通过游戏id获取账号
+     * @param gameAccountId
+     * @return
+     */
+    User getByGameAccountId(@Param("game_account_id") String gameAccountId);
+    
+    /**
+     * 根据当前登录用户查询旗下代理
+     * @param users
+     * @param curId
+     * @return
+     */
+    List<User> getUsersByCurrentUser(List<User> allUsers, Integer curId);
+    
+    List<Map<String, Object>> getUsersByids(List<Integer> ids);
 
 }

@@ -42,4 +42,12 @@ public interface UserMapper extends BaseMapper<User> {
      * 通过账号获取用户
      */
     User getByAccount(@Param("account") String account);
+    
+    /**
+     * 通过游戏id获取用户
+     * @param account
+     * @return
+     */
+    User getByGameAccountId(@Param("game_account_id") String account);
+    List<Map<String, Object>> selectUsersByIds(List<Integer> ids);
 }

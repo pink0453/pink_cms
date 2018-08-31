@@ -25,6 +25,7 @@ Agent.initColumn = function () {
             {title: '反水百分比', field: 'rate', visible: true, align: 'center', valign: 'middle'},
             {title: '游戏ID', field: 'game_account_id', visible: true, align: 'center', valign: 'middle'},
             {title: '上级代理id', field: 'parent_id', visible: true, align: 'center', valign: 'middle'},
+            {title: '绑定玩家数量', field: 'playersCount', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'createtime', visible: true, align: 'center', valign: 'middle'},
             {title: '最后登录时间', field: 'lastLogin', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'statusName', visible: true, align: 'center', valign: 'middle'}

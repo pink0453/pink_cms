@@ -55,6 +55,17 @@
 			and (createTime between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
 		</if>
 	</select>
+	
+	<select id="selectUsersByIds" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where status != 3
+		and id in
+		<foreach collection="list" index="index" item="i" open="(" separator="," close=")">
+			#{i}
+		</foreach>
+	</select>
 
 	<update id="setStatus">
 		update sys_user set status = #{status} where id =
@@ -75,6 +86,12 @@
 		select
 		<include refid="Base_Column_List_With_Pwd" />
 		from sys_user where account = #{account} and status != 3
+	</select>
+	
+	<select id="getByGameAccountId" resultType="user">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user where game_account_id = #{game_account_id} and status != 3
 	</select>
 
 </mapper>
