@@ -14,7 +14,7 @@ var AgentFl = {
 AgentFl.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '代理ID', field: 'aid', visible: true, align: 'center', valign: 'middle'},
+        {title: '代理游戏ID', field: 'aid', visible: true, align: 'center', valign: 'middle'},
         {title: '代理等级', field: 'lv', visible: true, align: 'center', valign: 'middle'},
         {title: '玩家ID', field: 'playerId', visible: true, align: 'center', valign: 'middle'},
         {title: '玩家昵称', field: 'playerName', visible: true, align: 'center', valign: 'middle'},

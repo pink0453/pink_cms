@@ -13,22 +13,31 @@ var AgentInfoDlg = {
         },
         gameAccountId: {
             validators: {
-                notEmpty: {
-                    message: '游戏ID不能为空'
+            	notEmpty: {
+                    message: '不能为空'
+                },
+            	digits: {
+                    message: '请输入有效ID'
                 }
             }
         },
         rate: {
             validators: {
-                notEmpty: {
-                    message: '返利率不能为空'
+            	notEmpty: {
+                    message: '不能为空'
+                },
+            	digits: {
+                    message: '请输入正确的返利率'
                 }
             }
         },
         phone: {
             validators: {
-                notEmpty: {
-                    message: '号码不能为空'
+            	notEmpty: {
+                    message: '不能为空'
+                },
+            	digits: {
+                    message: '请输入正确的号码'
                 }
             }
         },
@@ -110,6 +119,52 @@ AgentInfoDlg.validatePwd = function () {
     } else {
         return false;
     }
+};
+
+/**
+ * 验证反水率
+ */
+AgentInfoDlg.validateRate = function () {
+
+	var lvValue = $('#roleid').val();
+	var rateValue = $('#rate').val();
+	
+	if(lvValue == 12){//钻石
+		
+		if(rateValue > 60 && rateValue <= 70){
+			
+			return true;
+			
+		}
+		
+	}else if(lvValue == 13){
+		
+		if(rateValue > 50 && rateValue <= 60){
+			
+			return true;
+			
+		}
+		
+	}else if(lvValue == 14){
+		
+		if(rateValue > 40 && rateValue <= 50){
+			
+			return true;
+			
+		}
+		
+	}else if(lvValue == 15){
+		
+		if(rateValue > 30 && rateValue <= 40){
+			
+			return true;
+			
+		}
+		
+	}
+	
+	return false;
+	
 };
 
 /**
@@ -202,6 +257,13 @@ AgentInfoDlg.addSubmit = function() {
     if (!this.validatePwd()) {
         Feng.error("两次密码输入不一致");
         return;
+    }
+    
+    if(!this.validateRate()){
+    	
+    	Feng.error("反水率不在正确范围之内");
+        return;
+    	
     }
 
     //提交信息

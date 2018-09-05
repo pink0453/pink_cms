@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,6 @@ public class AgentFlController extends BaseController {
     private IPlayerService playerService;
     @Autowired
     private IUserService userService;
-
     @Autowired
     private IUserService agentFlService;
 
@@ -82,6 +82,7 @@ public class AgentFlController extends BaseController {
     public Object list(String condition) {
     	
     	List<Mj_agent_fl> userFls = new ArrayList<Mj_agent_fl>();
+    	List<Integer> ids = new ArrayList<Integer>();
     	
     	if(ShiroKit.isAdmin()) {
     		
@@ -92,14 +93,48 @@ public class AgentFlController extends BaseController {
     		
     		ShiroUser suser = ShiroKit.getUser();
     		User currentUser = userService.selectById(suser.getId());
-    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
     		
-    		userFls = new ArrayList<Mj_agent_fl>();
-    		for(Mj_players player : players) {
+    		List<User> users = userService.getUsersByCurrentUser(new ArrayList<User>(), currentUser.getId());
+    		List<Mj_players> tmpPlayers = new ArrayList<Mj_players>();
+    		
+    		for(User user : users) {
     			
-    			userFls.addAll(userFlService.getFlByCurUser(player, 1));
+    			ids.add(user.getGameAccountId());
+    			
+    			List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), user.getGameAccountId());
+    			if(players != null) {
+    				
+    				tmpPlayers.addAll(players);
+    				
+    			}
     			
     		}
+    		ids.add(currentUser.getGameAccountId());
+    		
+    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
+    		tmpPlayers.addAll(players);
+    		
+    		List<Mj_agent_fl> newFl = new ArrayList<Mj_agent_fl>();
+    		
+    		for(Mj_players player : tmpPlayers) {
+    			
+    			newFl.addAll(userFlService.getFlByCurUser(player, 1));
+    			
+    		}
+    		
+    		for(Integer id : ids) {
+        		
+        		for(Mj_agent_fl afl : newFl) {
+            		
+        			if(afl.getAid() == id) {
+        				
+        				userFls.add(afl);
+        				
+        			}
+            		
+            	}
+        		
+        	}
     		
     	}
     	
@@ -152,4 +187,17 @@ public class AgentFlController extends BaseController {
     public Object detail(@PathVariable("agentFlId") Integer agentFlId) {
         return agentFlService.selectById(agentFlId);
     }
+    
+    /**
+     * list去重
+     * @param list
+     * @return
+     */
+    public List<Integer> removeDuplicate(List<Integer> list) {   
+        HashSet<Integer> h = new HashSet<Integer>(list);   
+        list.clear();   
+        list.addAll(h);   
+        return list;   
+    }   
+    
 }

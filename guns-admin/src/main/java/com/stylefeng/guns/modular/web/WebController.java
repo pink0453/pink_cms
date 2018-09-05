@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.modular.system.model.Mj_match_cards;
+import com.stylefeng.guns.modular.system.model.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.mongoDao.CardDao;
+import com.stylefeng.guns.modular.system.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.system.service.IUserService;
 
 /**
@@ -30,6 +32,8 @@ public class WebController extends BaseController {
 	private IUserService userService;
 	@Autowired
 	private CardDao cardDao;
+	@Autowired
+	private PlayersDao playersDao;
 	
 	/**
 	 * 返回代理详情
@@ -117,10 +121,14 @@ public class WebController extends BaseController {
 		
 	}
 	
+	/**
+	 * 删除牌型
+	 * @param card
+	 * @return
+	 */
 	@RequestMapping(value="/delCard")
 	@ResponseBody
 	public Object delCard(@RequestBody Mj_match_cards card) {
-		
 		
 		List<Mj_match_cards> cards = cardDao.getCard(card.getMap_id(), card.getPlayer_id());
 		
@@ -131,6 +139,26 @@ public class WebController extends BaseController {
 		}
 		
 		return "success";
+		
+	}
+	
+	@RequestMapping(value="/getPlayerInfo")
+	@ResponseBody
+	public Object getPlayerInfo() {
+		
+		String playerId = getPara("uid");
+		
+		if(playerId != null && !playerId.equals("")) {
+			
+			Mj_players player = playersDao.findPlayerByUid(Integer.parseInt(playerId));
+			return player;
+			
+		}else {
+			
+			return "error";
+			
+		}
+		
 		
 	}
 	
