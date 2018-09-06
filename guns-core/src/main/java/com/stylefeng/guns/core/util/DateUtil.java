@@ -41,6 +41,22 @@ public class DateUtil {
 		return time;
 	}
 	
+	public static String fomatLongDate(Long stamp) {
+		String time;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date(stamp*1000);
+		time = simpleDateFormat.format(date);
+		return time;
+	}
+	
+	public static String fomatLongDateHH(Long stamp) {
+		String time;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH : 00");
+		Date date = new Date(stamp*1000);
+		time = simpleDateFormat.format(date);
+		return time;
+	}
+	
     /**
      * 获取YYYY格式
      */
