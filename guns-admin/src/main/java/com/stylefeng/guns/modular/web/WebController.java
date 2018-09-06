@@ -142,6 +142,10 @@ public class WebController extends BaseController {
 		
 	}
 	
+	/**
+	 * 通过获取玩家信息
+	 * @return
+	 */
 	@RequestMapping(value="/getPlayerInfo")
 	@ResponseBody
 	public Object getPlayerInfo() {

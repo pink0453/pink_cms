@@ -15,6 +15,15 @@ public class Mj_stat_register {
 	private double yoyGrowthRate;//同比增长率
 	private long createTime;//创建时间
 	
+	private String timeStr;
+	
+	
+	public String getTimeStr() {
+		return timeStr;
+	}
+	public void setTimeStr(String timeStr) {
+		this.timeStr = timeStr;
+	}
 	public String getId() {
 		return id;
 	}

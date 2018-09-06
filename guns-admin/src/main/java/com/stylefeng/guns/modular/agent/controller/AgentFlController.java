@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
-import com.stylefeng.guns.modular.system.model.AgentFl;
 import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
 import com.stylefeng.guns.modular.system.model.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
@@ -154,7 +153,7 @@ public class AgentFlController extends BaseController {
      */
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add(AgentFl agentFl) {
+    public Object add(Mj_agent_fl agentFl) {
 //        agentFlService.insert(agentFl);
         return SUCCESS_TIP;
     }
@@ -174,7 +173,7 @@ public class AgentFlController extends BaseController {
      */
     @RequestMapping(value = "/update")
     @ResponseBody
-    public Object update(AgentFl agentFl) {
+    public Object update(Mj_agent_fl agentFl) {
 //        agentFlService.updateById(agentFl);
         return SUCCESS_TIP;
     }

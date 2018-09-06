@@ -35,4 +35,22 @@ public interface PlayersDao extends MongoRepository<Mj_players, Integer>{
 	@Query("{'create_time' : {'$gt' : ?0, '$lt' : ?1}}") 
 	public List<Mj_players> findByTimeRange(long from, long to);
 	
+	/**
+	 * 根据时间段查询日活跃人数
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	@Query("{'last_login_time' : {'$gt' : ?0, '$lt' : ?1}}") 
+	public List<Mj_players> findActiveByTimeRange(long from, long to);
+	
+	/**
+	 * 查询在线人数
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	@Query("{'is_offline' : ?0}") 
+	public List<Mj_players> findIsOnline(boolean isOffOnline);
+	
 }
