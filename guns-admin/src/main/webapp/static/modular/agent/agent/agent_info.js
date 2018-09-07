@@ -135,6 +135,11 @@ AgentInfoDlg.validateRate = function () {
 			
 			return true;
 			
+		}else{
+			
+			Feng.error("钻石的返利的范围在60-70之间");
+			return false;
+			
 		}
 		
 	}else if(lvValue == 13){
@@ -142,6 +147,11 @@ AgentInfoDlg.validateRate = function () {
 		if(rateValue > 50 && rateValue <= 60){
 			
 			return true;
+			
+		}else{
+			
+			Feng.error("白金的返利的范围在50-60之间");
+			return false;
 			
 		}
 		
@@ -151,6 +161,11 @@ AgentInfoDlg.validateRate = function () {
 			
 			return true;
 			
+		}else{
+			
+			Feng.error("黄金的返利的范围在40-50之间");
+			return false;
+			
 		}
 		
 	}else if(lvValue == 15){
@@ -158,6 +173,11 @@ AgentInfoDlg.validateRate = function () {
 		if(rateValue > 30 && rateValue <= 40){
 			
 			return true;
+			
+		}else{
+			
+			Feng.error("白银的返利的范围在30-40之间");
+			return false;
 			
 		}
 		
@@ -261,7 +281,7 @@ AgentInfoDlg.addSubmit = function() {
     
     if(!this.validateRate()){
     	
-    	Feng.error("反水率不在正确范围之内");
+//    	Feng.error("反水率不在正确范围之内");
         return;
     	
     }
