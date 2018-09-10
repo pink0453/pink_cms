@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
-import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
-import com.stylefeng.guns.modular.system.model.Mj_players;
+import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 

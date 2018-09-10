@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.stat.service.impl;
 
+import com.stylefeng.guns.modular.MongoDao.StatRegisterDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 import com.stylefeng.guns.modular.stat.service.IRegisterService;
-import com.stylefeng.guns.modular.system.model.Mj_stat_register;
-import com.stylefeng.guns.modular.system.mongoDao.StatRegisterDao;
 
 import java.util.List;
 

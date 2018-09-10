@@ -3,8 +3,8 @@ package com.stylefeng.guns.modular.agent.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.stylefeng.guns.modular.system.model.Mj_players;
-import com.stylefeng.guns.modular.system.mongoDao.PlayersDao;
+
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 
 /**
  * <p>

@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.stat.service;
 
 import java.util.List;
-import com.stylefeng.guns.modular.system.model.Mj_stat_open_room;
 
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 /**
  * <p>
  *  服务类

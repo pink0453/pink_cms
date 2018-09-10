@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.agent.service.impl;
 
+import com.stylefeng.guns.modular.MongoDao.PlayersDao;
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
-import com.stylefeng.guns.modular.system.model.Mj_players;
-import com.stylefeng.guns.modular.system.mongoDao.PlayersDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 
 import java.util.List;
 

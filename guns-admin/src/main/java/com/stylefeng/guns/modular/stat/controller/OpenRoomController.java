@@ -17,8 +17,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.stylefeng.guns.modular.system.model.Mj_stat_open_room;
-import com.stylefeng.guns.modular.system.model.Mj_stat_register;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.stat.service.IOpenRoomService;
 
 /**

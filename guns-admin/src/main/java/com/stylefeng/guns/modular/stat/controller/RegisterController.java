@@ -14,9 +14,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.stylefeng.guns.modular.system.model.Mj_stat_register;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.util.DateUtil;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 import com.stylefeng.guns.modular.stat.service.IRegisterService;
 
 /**

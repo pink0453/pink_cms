@@ -1,9 +1,10 @@
 package com.stylefeng.guns.modular.agent.service.impl;
 
+import com.stylefeng.guns.modular.MongoDao.UserFlDao;
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
-import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
-import com.stylefeng.guns.modular.system.model.Mj_players;
-import com.stylefeng.guns.modular.system.mongoDao.UserFlDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

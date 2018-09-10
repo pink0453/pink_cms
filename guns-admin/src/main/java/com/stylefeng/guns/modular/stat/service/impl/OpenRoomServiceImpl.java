@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.stat.service.impl;
 
+import com.stylefeng.guns.modular.MongoDao.StatOpenRoomDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.stat.service.IOpenRoomService;
-import com.stylefeng.guns.modular.system.model.Mj_stat_open_room;
-import com.stylefeng.guns.modular.system.mongoDao.StatOpenRoomDao;
 
 import java.util.List;
 
@@ -27,7 +27,6 @@ public class OpenRoomServiceImpl implements IOpenRoomService {
 	public List<Mj_stat_open_room> findORoomByCondition(long date) {
 		// TODO Auto-generated method stub
 		long to = date + 86400;
-		
 		return openRoomDao.findByTimeRange(date, to);
 	}
 

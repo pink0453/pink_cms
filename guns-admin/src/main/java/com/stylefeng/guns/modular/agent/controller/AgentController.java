@@ -29,8 +29,8 @@ import com.stylefeng.guns.core.shiro.ShiroUser;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.factory.UserFactory;
-import com.stylefeng.guns.modular.system.model.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 import com.stylefeng.guns.modular.system.transfer.UserDto;

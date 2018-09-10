@@ -2,8 +2,8 @@ package com.stylefeng.guns.modular.agent.service;
 
 import java.util.List;
 
-import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
-import com.stylefeng.guns.modular.system.model.Mj_players;
+import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 
 /**
  * <p>

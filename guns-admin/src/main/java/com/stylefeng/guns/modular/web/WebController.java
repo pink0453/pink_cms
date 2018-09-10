@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.common.constant.factory.ConstantFactory;
-import com.stylefeng.guns.modular.system.model.Mj_match_cards;
-import com.stylefeng.guns.modular.system.model.Mj_players;
+import com.stylefeng.guns.modular.MongoDao.CardDao;
+import com.stylefeng.guns.modular.MongoDao.PlayersDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_match_cards;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
-import com.stylefeng.guns.modular.system.mongoDao.CardDao;
-import com.stylefeng.guns.modular.system.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.system.service.IUserService;
 
 /**

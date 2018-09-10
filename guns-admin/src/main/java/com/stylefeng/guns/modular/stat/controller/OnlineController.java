@@ -17,7 +17,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.stylefeng.guns.modular.system.model.Mj_stat_online;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.stat.service.IOnlineService;
 
 /**
