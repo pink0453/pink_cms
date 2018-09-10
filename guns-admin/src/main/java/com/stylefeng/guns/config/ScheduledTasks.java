@@ -29,7 +29,11 @@ import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 
-
+/**
+ * 定时任务 统计游戏数据
+ * @author admin
+ *
+ */
 @Component
 @Configurable
 @EnableScheduling
