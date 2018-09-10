@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.mongoDao;
+package com.stylefeng.guns.modular.MongoDao;
 
 
 import java.util.List;
@@ -6,9 +6,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.stylefeng.guns.modular.system.model.Mj_agent_fl;
-import com.stylefeng.guns.modular.system.model.Mj_players;
-
+import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
 
 public interface UserFlDao extends MongoRepository<Mj_agent_fl, Integer>{
 	

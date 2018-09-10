@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.model;
+package com.stylefeng.guns.modular.mongoModel;
 
 /**
  * <p>

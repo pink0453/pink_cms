@@ -1,11 +1,11 @@
-package com.stylefeng.guns.modular.system.mongoDao;
+package com.stylefeng.guns.modular.MongoDao;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.stylefeng.guns.modular.system.model.Mj_stat_register;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 
 public interface StatRegisterDao extends MongoRepository<Mj_stat_register, Integer>{
 

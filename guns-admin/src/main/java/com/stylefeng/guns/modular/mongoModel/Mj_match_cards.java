@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.model;
+package com.stylefeng.guns.modular.mongoModel;
 
 public class Mj_match_cards {
 

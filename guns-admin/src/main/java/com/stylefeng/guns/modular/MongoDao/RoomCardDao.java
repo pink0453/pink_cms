@@ -1,11 +1,11 @@
-package com.stylefeng.guns.modular.system.mongoDao;
+package com.stylefeng.guns.modular.MongoDao;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.stylefeng.guns.modular.system.model.Mj_rooms;
+import com.stylefeng.guns.modular.mongoModel.Mj_rooms;
 
 public interface RoomCardDao extends MongoRepository<Mj_rooms, Integer> {
 

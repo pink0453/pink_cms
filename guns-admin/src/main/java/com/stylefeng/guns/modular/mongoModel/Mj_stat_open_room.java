@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.system.model;
+package com.stylefeng.guns.modular.mongoModel;
 
 public class Mj_stat_open_room {
 
