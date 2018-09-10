@@ -1,4 +1,4 @@
-package com.stylefeng.guns.modular.MongoDao;
+package com.stylefeng.guns.modular.mongoDao;
 
 
 import java.util.List;
