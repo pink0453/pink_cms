@@ -1,6 +1,6 @@
 package com.stylefeng.guns.modular.stat.service.impl;
 
-import com.stylefeng.guns.modular.MongoDao.StatOpenRoomDao;
+import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.stat.service.IOpenRoomService;
 

@@ -1,7 +1,7 @@
 package com.stylefeng.guns.modular.agent.service.impl;
 
-import com.stylefeng.guns.modular.MongoDao.UserFlDao;
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
+import com.stylefeng.guns.modular.mongoDao.UserFlDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 

@@ -1,6 +1,6 @@
 package com.stylefeng.guns.modular.stat.service.impl;
 
-import com.stylefeng.guns.modular.MongoDao.StatActiveDao;
+import com.stylefeng.guns.modular.mongoDao.StatActiveDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_active;
 import com.stylefeng.guns.modular.stat.service.IActiveService;
 

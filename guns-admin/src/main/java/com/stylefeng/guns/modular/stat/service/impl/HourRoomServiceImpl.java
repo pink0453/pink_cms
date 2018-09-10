@@ -1,6 +1,6 @@
 package com.stylefeng.guns.modular.stat.service.impl;
 
-import com.stylefeng.guns.modular.MongoDao.StatHourRoomDao;
+import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.stat.service.IHourRoomService;
 
