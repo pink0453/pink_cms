@@ -3,7 +3,7 @@ package com.stylefeng.guns.modular.mongoModel;
 public class Mj_stat_online {
 
 	private String id;
-	private long beginTime;
+	private Long beginTime;
 	private long endTime;
 	private int onCount;
 	
@@ -16,10 +16,10 @@ public class Mj_stat_online {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public long getBeginTime() {
+	public Long getBeginTime() {
 		return beginTime;
 	}
-	public void setBeginTime(long beginTime) {
+	public void setBeginTime(Long beginTime) {
 		this.beginTime = beginTime;
 	}
 	public long getEndTime() {

@@ -3,7 +3,7 @@ package com.stylefeng.guns.modular.mongoModel;
 public class Mj_stat_active {
 
 	private String id;
-	private long time;
+	private Long time;
 	private int actCount;
 	private double ringGrowth;//环比增长
 	private double ringGrowthRate;//环比增长率
@@ -24,10 +24,10 @@ public class Mj_stat_active {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public long getTime() {
+	public Long getTime() {
 		return time;
 	}
-	public void setTime(long time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
 	public int getActCount() {

@@ -7,6 +7,8 @@ import com.stylefeng.guns.modular.stat.service.IRegisterService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +38,8 @@ public class RegisterServiceImpl implements IRegisterService {
 	@Override
 	public List<Mj_stat_register> findAll() {
 		// TODO Auto-generated method stub
-		return registerDao.findAll();
+		Sort sort = new Sort(Direction.DESC, "createTime");
+		return registerDao.findAll(sort);
 	}
 	
 }

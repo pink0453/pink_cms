@@ -7,6 +7,8 @@ import com.stylefeng.guns.modular.stat.service.IActiveService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,7 +37,8 @@ public class ActiveServiceImpl implements IActiveService {
 	@Override
 	public List<Mj_stat_active> findAll() {
 		// TODO Auto-generated method stub
-		return activeDao.findAll();
+		Sort sort = new Sort(Direction.DESC, "time");
+		return activeDao.findAll(sort);
 	}
 
 }

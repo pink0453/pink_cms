@@ -7,6 +7,8 @@ import com.stylefeng.guns.modular.stat.service.IHourRoomService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +35,8 @@ public class HourRoomServiceImpl implements IHourRoomService {
 	@Override
 	public List<Mj_stat_hour_room> findAll() {
 		// TODO Auto-generated method stub
-		return hourRoomDao.findAll();
+		Sort sort = new Sort(Direction.DESC, "time");
+		return hourRoomDao.findAll(sort);
 	}
 
 }

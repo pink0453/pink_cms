@@ -82,6 +82,7 @@ public class AgentFlController extends BaseController {
     	
     	List<Mj_agent_fl> userFls = new ArrayList<Mj_agent_fl>();
     	List<Integer> ids = new ArrayList<Integer>();
+    	User currentUser = null;
     	
     	if(ShiroKit.isAdmin()) {
     		
@@ -91,7 +92,7 @@ public class AgentFlController extends BaseController {
     	}else {
     		
     		ShiroUser suser = ShiroKit.getUser();
-    		User currentUser = userService.selectById(suser.getId());
+    		currentUser = userService.selectById(suser.getId());
     		
     		List<User> users = userService.getUsersByCurrentUser(new ArrayList<User>(), currentUser.getId());
     		List<Mj_players> tmpPlayers = new ArrayList<Mj_players>();
@@ -127,7 +128,11 @@ public class AgentFlController extends BaseController {
             		
         			if(afl.getAid() == id) {
         				
-        				userFls.add(afl);
+        				if(afl.getAid() == currentUser.getGameAccountId()) {
+        					
+        					userFls.add(afl);
+        					
+        				}
         				
         			}
             		
