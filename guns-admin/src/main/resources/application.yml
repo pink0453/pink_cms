@@ -37,9 +37,9 @@ log:
 spring:
   profiles: local
   datasource:
-    url: jdbc:mysql://47.52.90.17:3306/QIPAI_GM_CMS?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://rm-2ze1ne76h1c98xa86to.mysql.rds.aliyuncs.com:3306/QIPAI_GM_CMS?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
     username: root
-    password: 123456
+    password: Smallwo1f!@#
     db-name: QIPAI_GM_CMS #用来搜集数据库的所有表
     filters: wall,mergeStat
 
@@ -58,9 +58,9 @@ guns:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://47.52.90.17:3306/QIPAI_GM_CMS?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
     username: root
-    password: root
+    password: 123456
     db-name: guns #用来搜集数据库的所有表
     filters: wall,mergeStat
 
