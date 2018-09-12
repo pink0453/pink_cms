@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.stylefeng.guns.modular.mongoDao.PlayerFlDao;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoDao.RoomCardDao;
 import com.stylefeng.guns.modular.mongoDao.StatActiveDao;
@@ -21,6 +22,8 @@ import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatOnlineDao;
 import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatRegisterDao;
+import com.stylefeng.guns.modular.mongoDao.StatSystemWaterDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_player_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.mongoModel.Mj_rooms;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_active;
@@ -28,6 +31,7 @@ import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_system_water;
 
 /**
  * 定时任务 统计游戏数据
@@ -53,6 +57,10 @@ public class ScheduledTasks {
 	private StatOpenRoomDao openRoomDao;
 	@Autowired
 	private StatHourRoomDao hourRoomDao;
+	@Autowired
+	private PlayerFlDao playerFlDao;
+	@Autowired
+	private StatSystemWaterDao systemWaterDao;
 	
 	Map<Integer, Integer> onMap = new HashMap<Integer, Integer>();
 	
@@ -278,6 +286,81 @@ public class ScheduledTasks {
 		hourRoomDao.insert(room);
 		
 		System.out.println("----------------------结束统计每小时开房----------------------");
+	}
+	
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void statSystemWater() {
+		System.out.println("----------------------开始统计今日抽水----------------------");
+		
+		long nowTime = System.currentTimeMillis() / 1000;
+		long beforeTime = nowTime - 86400;//前一天
+		
+		List<Mj_player_fl> fls = playerFlDao.findFlByTimeRange(beforeTime, nowTime);
+		
+		float niuniuPokerSystem = 0;
+		float niuniuPokerAgent = 0;
+		float niuniuMjSystem = 0;
+		float niuniuMjAgent = 0;
+		float sangongPokerSystem = 0;
+		float sangongPokerAgent = 0;
+		float zjhPokerSystem = 0;
+		float zjhPokerAgent = 0;
+		
+		float totalSystem = 0;
+		float totalAgent = 0;
+		
+		for(Mj_player_fl fl : fls) {
+			
+			switch (fl.getRoomType()) {
+			case 229://麻将牛牛 金币
+				niuniuMjSystem = niuniuMjSystem + fl.getFront_money();
+				niuniuMjAgent = niuniuMjAgent + fl.getBehind_money();
+				break;
+			case 221://纸牌牛牛 金币
+				niuniuPokerSystem = niuniuPokerSystem + fl.getFront_money();
+				niuniuPokerAgent = niuniuPokerAgent + fl.getBehind_money();
+				break;
+			case 207://扎金花 金币
+				zjhPokerSystem = zjhPokerSystem + fl.getFront_money();
+				zjhPokerAgent = zjhPokerAgent + fl.getBehind_money();
+				break;
+			case 231://三公 金币
+				sangongPokerSystem = sangongPokerSystem + fl.getFront_money();
+				sangongPokerAgent = sangongPokerAgent + fl.getBehind_money();
+				break;
+			default:
+				break;
+			}
+			
+		}
+		
+		niuniuPokerSystem = niuniuPokerSystem - niuniuPokerAgent;
+		niuniuMjSystem = niuniuMjSystem - niuniuMjAgent;
+		sangongPokerSystem = sangongPokerSystem - sangongPokerAgent;
+		zjhPokerSystem = zjhPokerSystem - zjhPokerAgent;
+		
+		totalSystem = niuniuPokerSystem + niuniuMjSystem + sangongPokerSystem + zjhPokerSystem;
+		totalAgent = niuniuPokerAgent + niuniuMjAgent + sangongPokerAgent + zjhPokerAgent;
+		
+		//保存时间向前推1个小时,保证算出来的数据在当天
+		long saveTime = nowTime - 3600;
+		
+		Mj_stat_system_water systemWater = new Mj_stat_system_water();
+		systemWater.setNiuniuMjAgent(niuniuMjAgent);
+		systemWater.setNiuniuMjSystem(niuniuMjSystem);
+		systemWater.setNiuniuPokerAgent(niuniuPokerAgent);
+		systemWater.setNiuniuPokerSystem(niuniuPokerSystem);
+		systemWater.setSangongPokerAgent(sangongPokerAgent);
+		systemWater.setSangongPokerSystem(sangongPokerSystem);
+		systemWater.setZjhPokerAgent(zjhPokerAgent);
+		systemWater.setZjhPokerSystem(zjhPokerSystem);
+		systemWater.setTotalAgent(totalAgent);
+		systemWater.setTotalSystem(totalSystem);
+		systemWater.setTime(saveTime);
+		
+		systemWaterDao.insert(systemWater);
+		
+		System.out.println("----------------------结束统计今日抽水----------------------");
 	}
 	
 }
