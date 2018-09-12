@@ -18,20 +18,26 @@ import com.stylefeng.guns.modular.mongoDao.PlayerFlDao;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoDao.RoomCardDao;
 import com.stylefeng.guns.modular.mongoDao.StatActiveDao;
+import com.stylefeng.guns.modular.mongoDao.StatAgentFlDao;
 import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatOnlineDao;
 import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatRegisterDao;
 import com.stylefeng.guns.modular.mongoDao.StatSystemWaterDao;
+import com.stylefeng.guns.modular.mongoDao.UserFlDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_player_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.mongoModel.Mj_rooms;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_active;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_agent_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_system_water;
+import com.stylefeng.guns.modular.system.model.User;
+import com.stylefeng.guns.modular.system.service.IUserService;
 
 /**
  * 定时任务 统计游戏数据
@@ -61,6 +67,12 @@ public class ScheduledTasks {
 	private PlayerFlDao playerFlDao;
 	@Autowired
 	private StatSystemWaterDao systemWaterDao;
+	@Autowired
+	private UserFlDao userFlDao;
+	@Autowired
+	private IUserService userService;
+	@Autowired
+	private StatAgentFlDao agentFlDao;
 	
 	Map<Integer, Integer> onMap = new HashMap<Integer, Integer>();
 	
@@ -234,7 +246,6 @@ public class ScheduledTasks {
 	/**
 	 * 每小时开房次数统计
 	 */
-//	@Scheduled(cron = "0/10 * * * * ? ")
 	@Scheduled(cron = "0 0 * * *  ?")
 	public void statHourRoomSch() {
 		System.out.println("----------------------开始统计每小时开房----------------------");
@@ -288,8 +299,11 @@ public class ScheduledTasks {
 		System.out.println("----------------------结束统计每小时开房----------------------");
 	}
 	
+	/**
+	 * 系统抽水统计
+	 */
 	@Scheduled(cron = "0 0 0 * * ?")
-	public void statSystemWater() {
+	public void statSystemWaterSch() {
 		System.out.println("----------------------开始统计今日抽水----------------------");
 		
 		long nowTime = System.currentTimeMillis() / 1000;
@@ -361,6 +375,43 @@ public class ScheduledTasks {
 		systemWaterDao.insert(systemWater);
 		
 		System.out.println("----------------------结束统计今日抽水----------------------");
+	}
+	
+	/**
+	 * 代理返利统计
+	 */
+//	@Scheduled(cron = "0/10 * * * * ? ")
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void statAgentRecordSch() {
+		System.out.println("----------------------开始代理返利统计---------------------");
+		
+		long nowTime = System.currentTimeMillis() / 1000;
+		long beforeTime = nowTime - 86400;//前一天
+		List<Mj_agent_fl> fls = userFlDao.findByTimeRange(beforeTime, nowTime);
+		
+		//保存时间向前推1个小时,保证算出来的数据在当天
+		long saveTime = nowTime - 3600;
+		
+		for(Mj_agent_fl fl : fls) {
+			
+			Mj_stat_agent_fl agentFl = new Mj_stat_agent_fl();
+			User user = userService.getByGameAccountId(fl.getAid()+"");
+			
+			agentFl.setGameAccountId(user.getGameAccountId());
+			agentFl.setLv(Integer.parseInt(user.getRoleid()));
+			agentFl.setLvStr(fl.getLv());
+			agentFl.setMoney(fl.getMoney());
+			agentFl.setParentId(fl.getPid());
+			agentFl.setPhone(user.getPhone());
+			agentFl.setRealName(user.getName());
+			agentFl.setType(fl.getType());
+			agentFl.setTime(saveTime);
+			
+			agentFlDao.insert(agentFl);
+			
+		}
+		
+		System.out.println("----------------------结束代理返利统计---------------------");
 	}
 	
 }

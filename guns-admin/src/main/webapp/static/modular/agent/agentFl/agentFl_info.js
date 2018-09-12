@@ -1,5 +1,5 @@
 /**
- * 初始化代理返利详情对话框
+ * 初始化代理返利统计详情对话框
  */
 var AgentFlInfoDlg = {
     agentFlInfoData : {}

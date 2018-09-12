@@ -1,5 +1,5 @@
 /**
- * 代理返利管理初始化
+ * 代理返利统计管理初始化
  */
 var AgentFl = {
     id: "AgentFlTable",	//表格id
@@ -14,13 +14,12 @@ var AgentFl = {
 AgentFl.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '代理游戏ID', field: 'aid', visible: true, align: 'center', valign: 'middle'},
-        {title: '代理等级', field: 'lv', visible: true, align: 'center', valign: 'middle'},
-        {title: '玩家ID', field: 'playerId', visible: true, align: 'center', valign: 'middle'},
-        {title: '玩家昵称', field: 'playerName', visible: true, align: 'center', valign: 'middle'},
-        {title: '返利金额', field: 'money', visible: true, align: 'center', valign: 'middle'},
-        {title: '上级代理', field: 'pid', visible: true, align: 'center', valign: 'middle'},
-        {title: '创建时间', field: 'timeStr', visible: true, align: 'center', valign: 'middle'}
+            {title: '返利排名', field: 'rank', visible: true, align: 'center', valign: 'middle'},
+            {title: '真实姓名', field: 'realName', visible: true, align: 'center', valign: 'middle'},
+            {title: '手机号', field: 'phone', visible: true, align: 'center', valign: 'middle'},
+            {title: '游戏ID', field: 'gameAccountId', visible: true, align: 'center', valign: 'middle'},
+            {title: '代理等级', field: 'lvStr', visible: true, align: 'center', valign: 'middle'},
+            {title: '返利数量(单位:元)', field: 'money', visible: true, align: 'center', valign: 'middle'}
     ];
 };
 
@@ -39,12 +38,12 @@ AgentFl.check = function () {
 };
 
 /**
- * 点击添加代理返利
+ * 点击添加代理返利统计
  */
 AgentFl.openAddAgentFl = function () {
     var index = layer.open({
         type: 2,
-        title: '添加代理返利',
+        title: '添加代理返利统计',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
         maxmin: true,
@@ -54,13 +53,13 @@ AgentFl.openAddAgentFl = function () {
 };
 
 /**
- * 打开查看代理返利详情
+ * 打开查看代理返利统计详情
  */
 AgentFl.openAgentFlDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '代理返利详情',
+            title: '代理返利统计详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
             maxmin: true,
@@ -71,7 +70,7 @@ AgentFl.openAgentFlDetail = function () {
 };
 
 /**
- * 删除代理返利
+ * 删除代理返利统计
  */
 AgentFl.delete = function () {
     if (this.check()) {
@@ -87,11 +86,11 @@ AgentFl.delete = function () {
 };
 
 /**
- * 查询代理返利列表
+ * 查询代理返利统计列表
  */
 AgentFl.search = function () {
     var queryData = {};
-    queryData['condition'] = $("#condition").val();
+    queryData['date'] = $("#condition").val();
     AgentFl.table.refresh({query: queryData});
 };
 
