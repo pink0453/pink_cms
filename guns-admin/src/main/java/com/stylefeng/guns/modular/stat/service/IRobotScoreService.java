@@ -1,5 +1,8 @@
 package com.stylefeng.guns.modular.stat.service;
 
+import java.util.List;
+
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_robot_score;
 
 /**
  * <p>
@@ -11,4 +14,6 @@ package com.stylefeng.guns.modular.stat.service;
  */
 public interface IRobotScoreService {
 
+	public List<Mj_stat_robot_score> findRobotScoreByCondition(long date);
+	public List<Mj_stat_robot_score> findAll();
 }

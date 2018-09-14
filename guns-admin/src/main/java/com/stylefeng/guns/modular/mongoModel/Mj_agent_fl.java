@@ -16,7 +16,7 @@ public class Mj_agent_fl {
 	private Integer lvType;
 	private Integer pid;
 	private float money;//返利数量
-	private long time;
+	private Long time;
 	
 	private String name;
 	private String tel;
@@ -88,12 +88,6 @@ public class Mj_agent_fl {
 	public void setMoney(float money) {
 		this.money = money;
 	}
-	public long getTime() {
-		return time;
-	}
-	public void setTime(long time) {
-		this.time = time;
-	}
 	public String getName() {
 		return name;
 	}
@@ -106,4 +100,11 @@ public class Mj_agent_fl {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
+	public Long getTime() {
+		return time;
+	}
+	public void setTime(Long time) {
+		this.time = time;
+	}
+	
 }

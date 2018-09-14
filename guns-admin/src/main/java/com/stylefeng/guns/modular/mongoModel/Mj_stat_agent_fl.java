@@ -12,10 +12,18 @@ public class Mj_stat_agent_fl {
 	private int parentId;
 	private float money;
 	private int type;
+	private int aid;
 	
 	private long time;
 	private String timeStr;
 	
+	
+	public int getAid() {
+		return aid;
+	}
+	public void setAid(int aid) {
+		this.aid = aid;
+	}
 	public long getTime() {
 		return time;
 	}

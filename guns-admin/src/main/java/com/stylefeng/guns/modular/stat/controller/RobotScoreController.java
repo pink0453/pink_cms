@@ -1,14 +1,23 @@
 package com.stylefeng.guns.modular.stat.controller;
 
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.util.DateUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_robot_score;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_system_water;
 import com.stylefeng.guns.modular.stat.service.IRobotScoreService;
 
 /**
@@ -58,9 +67,32 @@ public class RobotScoreController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(String condition) {
-//        return robotScoreService.selectList(null);
-    	return null;
+    public Object list(@RequestParam(required = false) String date) throws ParseException {
+    	
+    	List<Mj_stat_robot_score> robots = null;
+    	
+    	if(date != null && !date.equals("")) {
+    		
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateTime = sdf.parse(date);
+    		
+    		long time = dateTime.getTime() / 1000;
+    		robots = robotScoreService.findRobotScoreByCondition(time);
+    		
+    	}else {
+    		
+    		robots = robotScoreService.findAll();
+    		
+    	}
+    	
+    	for(Mj_stat_robot_score system : robots) {
+    		
+    		String time = DateUtil.fomatLongDate(system.getTime());
+    		system.setTimeStr(time);
+    		
+    	}
+    	
+    	return robots;
     }
 
     /**

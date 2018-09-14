@@ -15,7 +15,11 @@ RobotScore.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
             {title: '日期', field: 'timeStr', visible: true, align: 'center', valign: 'middle'},
-            {title: '纸牌牛牛', field: 'name', visible: true, align: 'center', valign: 'middle'}
+            {title: '纸牌牛牛抽水金额', field: 'niuniuPokerWaterScore', visible: true, align: 'center', valign: 'middle'},
+            {title: '麻将牛牛抽水金额', field: 'niuniuMjWaterScore', visible: true, align: 'center', valign: 'middle'},
+            {title: '扎金花抽水金额', field: 'zjhPokerWaterScore', visible: true, align: 'center', valign: 'middle'},
+            {title: '三公抽水金额', field: 'sangongPokerWaterScore', visible: true, align: 'center', valign: 'middle'},
+            {title: '总抽水金额', field: 'totalWaterScore', visible: true, align: 'center', valign: 'middle'}
     ];
 };
 
@@ -86,7 +90,7 @@ RobotScore.delete = function () {
  */
 RobotScore.search = function () {
     var queryData = {};
-    queryData['condition'] = $("#condition").val();
+    queryData['date'] = $("#condition").val();
     RobotScore.table.refresh({query: queryData});
 };
 

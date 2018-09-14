@@ -3,6 +3,7 @@ package com.stylefeng.guns.modular.agent.controller;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.shiro.ShiroUser;
+import com.stylefeng.guns.core.util.ConstantUtil;
 import com.stylefeng.guns.core.util.DateUtil;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import com.stylefeng.guns.modular.agent.service.IPlayerService;
 import com.stylefeng.guns.modular.agent.service.IUserFlService;
 import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 
@@ -83,7 +86,7 @@ public class AgentFlController extends BaseController {
     	List<Mj_agent_fl> userFls = new ArrayList<Mj_agent_fl>();
     	List<Integer> ids = new ArrayList<Integer>();
     	
-    	if(ShiroKit.isAdmin()) {
+    	if(ShiroKit.hasAnyRoles(ConstantUtil.ADMIN_ROLES)) {
     		
     		userFls = userFlService.getAll();
     		
@@ -93,52 +96,56 @@ public class AgentFlController extends BaseController {
     		ShiroUser suser = ShiroKit.getUser();
     		User currentUser = userService.selectById(suser.getId());
     		
-    		List<User> users = userService.getUsersByCurrentUser(new ArrayList<User>(), currentUser.getId());
-    		List<Mj_players> tmpPlayers = new ArrayList<Mj_players>();
+    		//直接查询返给当前用户的返利
+    		int curGameId = currentUser.getGameAccountId();
+    		userFls = userFlService.getFlByCurGameId(curGameId, 1);
     		
-    		for(User user : users) {
-    			
-    			ids.add(user.getGameAccountId());
-    			
-    			List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), user.getGameAccountId());
-    			if(players != null) {
-    				
-    				tmpPlayers.addAll(players);
-    				
-    			}
-    			
-    		}
-    		ids.add(currentUser.getGameAccountId());
-    		
-    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
-    		tmpPlayers.addAll(players);
-    		
-    		List<Mj_agent_fl> newFl = new ArrayList<Mj_agent_fl>();
-    		
-    		for(Mj_players player : tmpPlayers) {
-    			
-    			newFl.addAll(userFlService.getFlByCurUser(player, 1));
-    			
-    		}
-    		
-    		for(Integer id : ids) {
-        		
-        		for(Mj_agent_fl afl : newFl) {
-            		
-        			if(afl.getAid() == id) {
-        				
-        				if(afl.getAid() == currentUser.getGameAccountId()) {
-        					
-        					userFls.add(afl);
-        					
-        				}
-        				
-        			}
-            		
-            	}
-        		
-        	}
-    		
+    		//------------------------------------------递归查询---------------------------------------------------
+//    		List<User> users = userService.getUsersByCurrentUser(new ArrayList<User>(), currentUser.getId());
+//    		List<Mj_players> tmpPlayers = new ArrayList<Mj_players>();
+//    		for(User user : users) {
+//    			
+//    			ids.add(user.getGameAccountId());
+//    			
+//    			List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), user.getGameAccountId());
+//    			if(players != null) {
+//    				
+//    				tmpPlayers.addAll(players);
+//    				
+//    			}
+//    			
+//    		}
+//    		ids.add(currentUser.getGameAccountId());
+//    		
+//    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
+//    		tmpPlayers.addAll(players);
+//    		
+//    		List<Mj_agent_fl> newFl = new ArrayList<Mj_agent_fl>();
+//    		
+//    		for(Mj_players player : tmpPlayers) {
+//    			
+//    			newFl.addAll(userFlService.getFlByCurUser(player, 1));
+//    			
+//    		}
+//    		
+//    		for(Integer id : ids) {
+//        		
+//        		for(Mj_agent_fl afl : newFl) {
+//            		
+//        			if(afl.getAid() == id) {
+//        				
+//        				if(afl.getAid() == currentUser.getGameAccountId()) {
+//        					
+//        					userFls.add(afl);
+//        					
+//        				}
+//        				
+//        			}
+//            		
+//            	}
+//        		
+//        	}
+//    		
     	}
     	
     	for(Mj_agent_fl afl : userFls) {
@@ -147,6 +154,14 @@ public class AgentFlController extends BaseController {
     		afl.setTimeStr(date);
     		
     	}
+    	
+    	//倒序排
+    	if(userFls != null) {
+			
+			Comparator<Mj_agent_fl> comparator = (s1, s2) -> s1.getTime().compareTo(s2.getTime());
+			userFls.sort(comparator.reversed());
+			//comparator.reversed()
+		}
     	
     	return userFls;
     	

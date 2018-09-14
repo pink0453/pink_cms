@@ -3,6 +3,7 @@ package com.stylefeng.guns.modular.agent.controller;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.shiro.ShiroUser;
+import com.stylefeng.guns.core.util.ConstantUtil;
 import com.stylefeng.guns.core.util.DateUtil;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ public class UserFlController extends BaseController {
     	
     	List<Mj_agent_fl> userFls = new ArrayList<Mj_agent_fl>();
     	
-    	if(ShiroKit.isAdmin()) {
+    	if(ShiroKit.hasAnyRoles(ConstantUtil.ADMIN_ROLES)) {
     		
     		userFls = userFlService.getAll();
     		
@@ -87,14 +89,19 @@ public class UserFlController extends BaseController {
     		
     		ShiroUser suser = ShiroKit.getUser();
     		User currentUser = userService.selectById(suser.getId());
-    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
     		
-    		userFls = new ArrayList<Mj_agent_fl>();
-    		for(Mj_players player : players) {
-    			
-    			userFls.addAll(userFlService.getFlByCurUser(player, 0));
-    			
-    		}
+    		//直接查询返给当前代理的返利
+    		int curGameId = currentUser.getGameAccountId();
+    		userFls = userFlService.getFlByCurGameId(curGameId, 0);
+    		
+    		//-----------------------------------------------递归查询-----------------------------------------------------------
+//    		List<Mj_players> players = playerService.getPlayersByRef(new ArrayList<>(), currentUser.getGameAccountId());
+//    		userFls = new ArrayList<Mj_agent_fl>();
+//    		for(Mj_players player : players) {
+//    			
+//    			userFls.addAll(userFlService.getFlByCurUser(player, 0));
+//    			
+//    		}
     		
     	}
     	
@@ -105,6 +112,14 @@ public class UserFlController extends BaseController {
     		
     	}
     
+    	//倒序排
+    	if(userFls != null) {
+			
+			Comparator<Mj_agent_fl> comparator = (s1, s2) -> s1.getTime().compareTo(s2.getTime());
+			userFls.sort(comparator.reversed());
+			//comparator.reversed()
+		}
+    	
     	return userFls;
     	
     }

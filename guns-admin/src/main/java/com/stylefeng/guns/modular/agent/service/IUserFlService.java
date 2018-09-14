@@ -23,5 +23,6 @@ public interface IUserFlService {
 	public void insert(Mj_agent_fl mjAgentFl);
 	
 	public List<Mj_agent_fl> getFlByCurUser(Mj_players player, Integer type);
-	
+
+	public List<Mj_agent_fl> getFlByCurGameId(int aid, Integer type);
 }

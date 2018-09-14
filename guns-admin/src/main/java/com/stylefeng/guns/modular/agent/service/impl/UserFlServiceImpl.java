@@ -46,4 +46,15 @@ public class UserFlServiceImpl implements IUserFlService {
 		return afs;
 	}
 
+	/**
+	 * 根据当前用户的游戏ID查询给他的返利记录
+	 */
+	@Override
+	public List<Mj_agent_fl> getFlByCurGameId(int aid, Integer type) {
+		// TODO Auto-generated method stub
+		List<Mj_agent_fl> afs = userFlDao.findByAidAndType(aid, type);
+		return afs;
+	}
+	
+
 }

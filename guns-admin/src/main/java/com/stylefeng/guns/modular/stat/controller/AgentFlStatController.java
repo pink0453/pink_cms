@@ -1,6 +1,9 @@
 package com.stylefeng.guns.modular.stat.controller;
 
 import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.shiro.ShiroKit;
+import com.stylefeng.guns.core.shiro.ShiroUser;
+import com.stylefeng.guns.core.util.ConstantUtil;
 import com.stylefeng.guns.core.util.DateUtil;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_agent_fl;
 import com.stylefeng.guns.modular.stat.service.IAgentFlStatService;
+import com.stylefeng.guns.modular.system.model.User;
+import com.stylefeng.guns.modular.system.service.IUserService;
 
 /**
  * 代理返利统计控制器
@@ -33,6 +39,8 @@ public class AgentFlStatController extends BaseController {
 
     @Autowired
     private IAgentFlStatService agentFlService;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 跳转到代理返利统计首页
@@ -70,7 +78,10 @@ public class AgentFlStatController extends BaseController {
     	
     	List<Mj_stat_agent_fl> afls = null;
     	
-    	if(date != null && !date.equals("")) {
+    	ShiroUser suser = ShiroKit.getUser();
+		User currentUser = userService.selectById(suser.getId());
+		
+		if(date != null && !date.equals("")) {
     		
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date dateTime = sdf.parse(date);
@@ -83,15 +94,36 @@ public class AgentFlStatController extends BaseController {
     		afls = agentFlService.findAll();
     		
     	}
-    	
-    	for(Mj_stat_agent_fl fl : afls) {
+		
+		for(Mj_stat_agent_fl fl : afls) {
     		
     		String time = DateUtil.fomatLongDate(fl.getTime());
     		fl.setTimeStr(time);
     		
     	}
-    	
-    	return afls;
+		
+		List<Mj_stat_agent_fl> tmpFls = new ArrayList<Mj_stat_agent_fl>();
+		
+		if(ShiroKit.hasAnyRoles(ConstantUtil.ADMIN_ROLES)) {
+			
+			return afls;
+			
+		}else {
+			int currentGameAccountId = currentUser.getGameAccountId();
+			for(Mj_stat_agent_fl fl : afls) {
+	    		
+				if(fl.getAid() == currentGameAccountId) {
+					
+					tmpFls.add(fl);
+					
+				}
+	    		
+	    	}
+			
+			return tmpFls;
+			
+		}
+		
     	
     }
 

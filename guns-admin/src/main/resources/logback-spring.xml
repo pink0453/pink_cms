@@ -25,6 +25,7 @@
         <logger name="com.stylefeng.guns" level="debug" additivity="false">
             <appender-ref ref="STDOUT"/>
         </logger>
+        <logger name="org.springframework.data.mongodb.core" level="DEBUG"/>
 
     </springProfile>
 

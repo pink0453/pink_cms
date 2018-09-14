@@ -36,7 +36,7 @@ public class OnlineServiceImpl implements IOnlineService {
 			
 			Comparator<Mj_stat_online> comparator = (s1, s2) -> s1.getBeginTime().compareTo(s2.getBeginTime());
 			ons.sort(comparator);
-			
+			//comparator.reversed()
 		}
 		
 		return ons;

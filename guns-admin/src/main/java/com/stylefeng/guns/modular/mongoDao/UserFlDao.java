@@ -16,4 +16,7 @@ public interface UserFlDao extends MongoRepository<Mj_agent_fl, Integer>{
 	@Query("{'time' : {'$gt' : ?0, '$lt' : ?1}}") 
 	public List<Mj_agent_fl> findByTimeRange(long from, long to);
 	
+	@Query("{ 'aid' : ?0 , 'type' : ?1}")
+	public List<Mj_agent_fl> findByAidAndType(Integer aid, Integer type);
+	
 }

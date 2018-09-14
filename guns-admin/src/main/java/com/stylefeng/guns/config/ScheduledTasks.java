@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.modular.mongoDao.PlayerFlDao;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoDao.RoomCardDao;
@@ -23,8 +24,10 @@ import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatOnlineDao;
 import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatRegisterDao;
+import com.stylefeng.guns.modular.mongoDao.StatRobotScoreDao;
 import com.stylefeng.guns.modular.mongoDao.StatSystemWaterDao;
 import com.stylefeng.guns.modular.mongoDao.UserFlDao;
+import com.stylefeng.guns.modular.mongoDao.WaterRecordDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_agent_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_player_fl;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
@@ -35,7 +38,9 @@ import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_robot_score;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_system_water;
+import com.stylefeng.guns.modular.mongoModel.Mj_water_record;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 
@@ -73,6 +78,10 @@ public class ScheduledTasks {
 	private IUserService userService;
 	@Autowired
 	private StatAgentFlDao agentFlDao;
+	@Autowired
+	private WaterRecordDao waterRecordDao;
+	@Autowired
+	private StatRobotScoreDao robotScoreDao;
 	
 	Map<Integer, Integer> onMap = new HashMap<Integer, Integer>();
 	
@@ -392,26 +401,159 @@ public class ScheduledTasks {
 		//保存时间向前推1个小时,保证算出来的数据在当天
 		long saveTime = nowTime - 3600;
 		
-		for(Mj_agent_fl fl : fls) {
+		List<Mj_stat_agent_fl> statFls = toGroupBy(fls);
+		
+		if(statFls != null && statFls.size() > 0) {
 			
-			Mj_stat_agent_fl agentFl = new Mj_stat_agent_fl();
-			User user = userService.getByGameAccountId(fl.getAid()+"");
-			
-			agentFl.setGameAccountId(user.getGameAccountId());
-			agentFl.setLv(Integer.parseInt(user.getRoleid()));
-			agentFl.setLvStr(fl.getLv());
-			agentFl.setMoney(fl.getMoney());
-			agentFl.setParentId(fl.getPid());
-			agentFl.setPhone(user.getPhone());
-			agentFl.setRealName(user.getName());
-			agentFl.setType(fl.getType());
-			agentFl.setTime(saveTime);
-			
-			agentFlDao.insert(agentFl);
+			for(Mj_stat_agent_fl statFl : statFls) {
+				
+				statFl.setTime(saveTime);
+				agentFlDao.insert(statFl);
+				
+			}
 			
 		}
 		
+//		for(Mj_agent_fl fl : fls) {
+//			
+//			Mj_stat_agent_fl agentFl = new Mj_stat_agent_fl();
+//			User user = userService.getByGameAccountId(fl.getAid()+"");
+//			
+//			agentFl.setGameAccountId(user.getGameAccountId());
+//			agentFl.setLv(Integer.parseInt(user.getRoleid()));
+//			agentFl.setLvStr(fl.getLv());
+//			agentFl.setMoney(fl.getMoney());
+//			agentFl.setParentId(fl.getPid());
+//			agentFl.setPhone(user.getPhone());
+//			agentFl.setRealName(user.getName());
+//			agentFl.setType(fl.getType());
+//			agentFl.setTime(saveTime);
+//			
+//			agentFlDao.insert(agentFl);
+//			
+//		}
+		
 		System.out.println("----------------------结束代理返利统计---------------------");
+	}
+	
+	/**
+	 * 统计机器人收入
+	 */
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void statRobotScore() {
+		System.out.println("----------------------开始统计机器人收入---------------------");
+		
+		long nowTime = System.currentTimeMillis() / 1000;
+		long beforeTime = nowTime - 86400;//前一天
+		
+		List<Mj_water_record> records = waterRecordDao.findByTimeRange(beforeTime, nowTime);
+		
+		float niuniuPokerWater = 0;
+		float niuniuMjWater = 0;
+		float zjhPokerWater = 0;
+		float sangongPokerWater = 0;
+		float totalWater = 0;
+		
+		for(Mj_water_record record : records) {
+			
+			switch (record.getMapId()) {
+			case 229://麻将牛牛 金币
+				niuniuMjWater = niuniuMjWater + record.getTakeMoney();
+				break;
+			case 221://纸牌牛牛 金币
+				niuniuPokerWater = niuniuPokerWater + record.getTakeMoney();
+				break;
+			case 207://扎金花 金币
+				zjhPokerWater = zjhPokerWater + record.getTakeMoney();
+				break;
+			case 231://三公 金币
+				sangongPokerWater = sangongPokerWater + record.getTakeMoney();
+				break;
+			default:
+				break;
+			}
+			
+		}
+		
+		totalWater = niuniuMjWater + niuniuPokerWater + zjhPokerWater + sangongPokerWater;
+		
+		//保存时间向前推1个小时,保证算出来的数据在当天
+		long saveTime = nowTime - 3600;
+		
+		Mj_stat_robot_score robotScore = new Mj_stat_robot_score();
+		robotScore.setNiuniuMjWaterScore(niuniuMjWater);
+		robotScore.setNiuniuPokerWaterScore(niuniuPokerWater);
+		robotScore.setSangongPokerWaterScore(sangongPokerWater);
+		robotScore.setZjhPokerWaterScore(zjhPokerWater);
+		robotScore.setTotalWaterScore(totalWater);
+		robotScore.setTime(saveTime);
+		
+		robotScoreDao.insert(robotScore);
+		
+		System.out.println("----------------------结束统计机器人收入---------------------");
+	}
+	
+	/**
+	 * 分组相加
+	 * @param list
+	 * @return
+	 */
+	public List<Mj_stat_agent_fl> toGroupBy(List<Mj_agent_fl> list){
+		
+		Map<Integer, Mj_stat_agent_fl> map = new HashMap<Integer, Mj_stat_agent_fl>();
+		List<Mj_stat_agent_fl> statFls = new ArrayList<Mj_stat_agent_fl>();
+		
+		for(Mj_agent_fl fl : list) {
+			
+			if(fl.getType() == 1) {
+				
+				Mj_stat_agent_fl statFl = map.get(fl.getPlayerId());
+				if(statFl == null) {
+					
+					User user = userService.getByGameAccountId(fl.getPlayerId()+"");
+					String roleName = ConstantFactory.me().getRoleName(user.getRoleid());
+					
+					statFl = new Mj_stat_agent_fl();
+					statFl.setGameAccountId(fl.getPlayerId());
+					statFl.setLv(Integer.parseInt(user.getRoleid()));
+					statFl.setLvStr(roleName);
+					statFl.setMoney(fl.getMoney());
+					statFl.setParentId(user.getParentId());
+					statFl.setPhone(user.getPhone());
+					statFl.setRealName(user.getName());
+					statFl.setType(fl.getType());
+					statFl.setAid(fl.getAid());
+					map.put(fl.getPlayerId(), statFl);
+					
+				}else {
+					
+					float money = statFl.getMoney() + fl.getMoney();
+					statFl.setMoney(money);
+					map.put(fl.getPlayerId(), statFl);
+					
+				}
+				
+			}
+			
+		}
+		
+		if(map != null && map.size() > 0) {
+			
+			for (Entry<Integer, Mj_stat_agent_fl> entry : map.entrySet()) {
+				//Map.entry<Integer,String> 映射项（键-值对）  有几个方法：用上面的名字entry
+				 //entry.getKey() ;entry.getValue(); entry.setValue();
+				 //map.entrySet()  返回此映射中包含的映射关系的 Set视图。
+//				 System.out.println("key= " + entry.getKey() + " and value= "
+//				             + entry.getValue());
+				 
+				 statFls.add(entry.getValue());
+				 
+			}
+			
+		}
+		
+		return statFls;
+		
 	}
 	
 }

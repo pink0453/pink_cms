@@ -13,16 +13,16 @@
                 
                 <#input id="account" name="账号" underline="true" value="${item.account}"/>
 	                <#select id="roleid" name="代理等级" underline="true">
-						@if(shiro.hasAnyRoles("admin,administrator")){
+						@if(shiro.hasPermission("/agentAdd/zuanshi")){
                         	<option value="12">钻石</option>
                         @}
-                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi")){
+                        @if(shiro.hasPermission("/agentAdd/baijin")){
                         	<option value="13">白金</option>
                         @}
-                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,baijin")){
+                        @if(shiro.hasPermission("/agentAdd/huangjin")){
                         	<option value="14">黄金</option>
                         @}
-                        @if(shiro.hasAnyRoles("admin,administrator,zuanshi,huangjin,baijin")){
+                        @if(shiro.hasPermission("/agentAdd/baiyin")){
                         	<option value="15">白银</option>
                         @}
 					</#select>
