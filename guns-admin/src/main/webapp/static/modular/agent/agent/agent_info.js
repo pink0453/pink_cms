@@ -131,52 +131,52 @@ AgentInfoDlg.validateRate = function () {
 	
 	if(lvValue == 12){//钻石
 		
-		if(rateValue > 60 && rateValue <= 70){
+		if(rateValue == 70){
 			
 			return true;
 			
 		}else{
 			
-			Feng.error("钻石的返利的范围在60-70之间");
+			Feng.error("钻石的返利为70");
 			return false;
 			
 		}
 		
 	}else if(lvValue == 13){
 		
-		if(rateValue > 50 && rateValue <= 60){
+		if(rateValue >= 60 && rateValue <= 70){
 			
 			return true;
 			
 		}else{
 			
-			Feng.error("白金的返利的范围在50-60之间");
+			Feng.error("白金的返利的范围在60-70之间");
 			return false;
 			
 		}
 		
 	}else if(lvValue == 14){
 		
-		if(rateValue > 40 && rateValue <= 50){
+		if(rateValue >= 50 && rateValue <= 60){
 			
 			return true;
 			
 		}else{
 			
-			Feng.error("黄金的返利的范围在40-50之间");
+			Feng.error("黄金的返利的范围在50-60之间");
 			return false;
 			
 		}
 		
 	}else if(lvValue == 15){
 		
-		if(rateValue > 30 && rateValue <= 40){
+		if(rateValue >= 40 && rateValue <= 50){
 			
 			return true;
 			
 		}else{
 			
-			Feng.error("白银的返利的范围在30-40之间");
+			Feng.error("白银的返利的范围在40-50之间");
 			return false;
 			
 		}
