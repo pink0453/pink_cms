@@ -24,6 +24,7 @@ import com.stylefeng.guns.modular.mongoDao.StatConversionDao;
 import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatOnlineDao;
 import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
+import com.stylefeng.guns.modular.mongoDao.StatPlatformDao;
 import com.stylefeng.guns.modular.mongoDao.StatRegisterDao;
 import com.stylefeng.guns.modular.mongoDao.StatRobotScoreDao;
 import com.stylefeng.guns.modular.mongoDao.StatSystemWaterDao;
@@ -39,6 +40,7 @@ import com.stylefeng.guns.modular.mongoModel.Mj_stat_conversion;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_platform;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_register;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_robot_score;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_system_water;
@@ -86,8 +88,11 @@ public class ScheduledTasks {
 	private StatRobotScoreDao robotScoreDao;
 	@Autowired
 	private StatConversionDao conversionDao;
+	@Autowired
+	private StatPlatformDao platformDao;
 	
 	Map<Integer, Integer> onMap = new HashMap<Integer, Integer>();
+	Map<String, Float> platformMap = new HashMap<String, Float>();
 	
 	/**
 	 * 每日0点查询今日注册用户
@@ -313,9 +318,10 @@ public class ScheduledTasks {
 	}
 	
 	/**
-	 * 系统抽水统计
+	 * 系统抽水统计(0点5分)
 	 */
-	@Scheduled(cron = "0 0 0 * * ?")
+//	@Scheduled(cron = "0/5 * * * * ? ")
+	@Scheduled(cron = "0 5 0 * * ?")
 	public void statSystemWaterSch() {
 		System.out.println("----------------------开始统计今日抽水----------------------");
 		
@@ -387,13 +393,17 @@ public class ScheduledTasks {
 		
 		systemWaterDao.insert(systemWater);
 		
+		Float system = platformMap.get("system");
+		if(system == null) {
+			platformMap.put("system", totalSystem);
+		}
+		
 		System.out.println("----------------------结束统计今日抽水----------------------");
 	}
 	
 	/**
 	 * 代理返利统计
 	 */
-//	@Scheduled(cron = "0/10 * * * * ? ")
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void statAgentRecordSch() {
 		System.out.println("----------------------开始代理返利统计---------------------");
@@ -441,9 +451,10 @@ public class ScheduledTasks {
 	}
 	
 	/**
-	 * 统计机器人收入
+	 * 统计机器人收入(0点6分)
 	 */
-	@Scheduled(cron = "0 0 0 * * ?")
+//	@Scheduled(cron = "0/10 * * * * ? ")
+	@Scheduled(cron = "0 6 0 * * ?")
 	public void statRobotScore() {
 		System.out.println("----------------------开始统计机器人收入---------------------");
 		
@@ -494,14 +505,19 @@ public class ScheduledTasks {
 		
 		robotScoreDao.insert(robotScore);
 		
+		Float robot = platformMap.get("robot");
+		if(robot == null) {
+			platformMap.put("robot", totalWater);
+		}
+		
 		System.out.println("----------------------结束统计机器人收入---------------------");
 	}
 	
 	/**
-	 * 兑换收入统计
+	 * 兑换收入统计(0点7分)
 	 */
-//	@Scheduled(cron = "0/10 * * * * ? ")
-	@Scheduled(cron = "0 0 0 * * ?")
+//	@Scheduled(cron = "0/15 * * * * ? ")
+	@Scheduled(cron = "0 7 0 * * ?")
 	public void statConversionSch() {
 		System.out.println("----------------------开始统计兑换收入---------------------");
 	
@@ -538,7 +554,71 @@ public class ScheduledTasks {
 		
 		conversionDao.insert(conversion);
 		
+		Float conversion_sys = platformMap.get("conversion");
+		if(conversion_sys == null) {
+			platformMap.put("conversion", sytemMoney);
+		}
+		
 		System.out.println("----------------------结束统计兑换收入---------------------");
+	}
+	
+	/**
+	 * 平台收入总统计(0点8分)
+	 */
+//	@Scheduled(cron = "0/20 * * * * ? ")
+	@Scheduled(cron = "0 8 0 * * ?")
+	public void statPlatformSch() {
+		System.out.println("----------------------开始统计平台收入---------------------");
+		
+		long nowTime = System.currentTimeMillis() / 1000;
+		
+		float conversionMoney = 0;
+		float conversionRate = 0;
+		float waterMoney = 0;
+		float waterRate = 0;
+		float robotMoney = 0;
+		float robotRate = 0;
+		float totalMoney = 0;
+		
+		Float system = platformMap.get("system");
+		Float robot = platformMap.get("robot");
+		Float conversion = platformMap.get("conversion");
+		
+		if(system != null && robot != null && conversion != null) {
+			
+			conversionMoney = system;
+			waterMoney = robot;
+			robotMoney = conversion;
+			
+			totalMoney = conversionMoney + waterMoney + robotMoney;
+			
+			conversionRate = conversionMoney / totalMoney;
+			waterRate = waterMoney / totalMoney;
+			robotRate = robotMoney / totalMoney;
+			
+			Mj_stat_platform platform = new Mj_stat_platform();
+			
+			platform.setConversionMoney(conversionMoney);
+			platform.setRobotMoney(robotMoney);
+			platform.setWaterMoney(waterMoney);
+			
+			platform.setConversionRate(conversionRate);
+			platform.setRobotRate(robotRate);
+			platform.setWaterRate(waterRate);
+			
+			platform.setTotalMoney(totalMoney);
+			
+			//保存时间向前推1个小时,保证算出来的数据在当天
+			long saveTime = nowTime - 3600;
+			platform.setTime(saveTime);
+			
+			platformDao.insert(platform);
+
+		}
+		
+		platformMap.clear();
+		
+		System.out.println("----------------------结束统计平台收入---------------------");
 	}
 	
 	/**
