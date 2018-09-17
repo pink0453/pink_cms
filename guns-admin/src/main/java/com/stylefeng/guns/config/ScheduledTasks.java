@@ -20,6 +20,7 @@ import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoDao.RoomCardDao;
 import com.stylefeng.guns.modular.mongoDao.StatActiveDao;
 import com.stylefeng.guns.modular.mongoDao.StatAgentFlDao;
+import com.stylefeng.guns.modular.mongoDao.StatConversionDao;
 import com.stylefeng.guns.modular.mongoDao.StatHourRoomDao;
 import com.stylefeng.guns.modular.mongoDao.StatOnlineDao;
 import com.stylefeng.guns.modular.mongoDao.StatOpenRoomDao;
@@ -34,6 +35,7 @@ import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.mongoModel.Mj_rooms;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_active;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_agent_fl;
+import com.stylefeng.guns.modular.mongoModel.Mj_stat_conversion;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_hour_room;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_online;
 import com.stylefeng.guns.modular.mongoModel.Mj_stat_open_room;
@@ -82,6 +84,8 @@ public class ScheduledTasks {
 	private WaterRecordDao waterRecordDao;
 	@Autowired
 	private StatRobotScoreDao robotScoreDao;
+	@Autowired
+	private StatConversionDao conversionDao;
 	
 	Map<Integer, Integer> onMap = new HashMap<Integer, Integer>();
 	
@@ -491,6 +495,50 @@ public class ScheduledTasks {
 		robotScoreDao.insert(robotScore);
 		
 		System.out.println("----------------------结束统计机器人收入---------------------");
+	}
+	
+	/**
+	 * 兑换收入统计
+	 */
+//	@Scheduled(cron = "0/10 * * * * ? ")
+	@Scheduled(cron = "0 0 0 * * ?")
+	public void statConversionSch() {
+		System.out.println("----------------------开始统计兑换收入---------------------");
+	
+		long nowTime = System.currentTimeMillis() / 1000;
+		long beforeTime = nowTime - 86400;//前一天
+		
+		List<Mj_player_fl> fls = playerFlDao.findFlByTimeRange(beforeTime, nowTime);
+		
+		float agentMoney = 0;
+		float sytemMoney = 0;
+		float totalMoney = 0;
+		
+		for(Mj_player_fl fl : fls) {
+			
+			if(fl.getRoomType() == 0) {
+				
+				agentMoney = agentMoney + fl.getBehind_money();
+				sytemMoney = sytemMoney + fl.getFront_money() - fl.getBehind_money();
+				
+			}
+			
+		}
+		
+		//保存时间向前推1个小时,保证算出来的数据在当天
+		long saveTime = nowTime - 3600;
+		
+		totalMoney = agentMoney + sytemMoney;
+		
+		Mj_stat_conversion conversion = new Mj_stat_conversion();
+		conversion.setAgentMoney(agentMoney);
+		conversion.setSystemMoney(sytemMoney);
+		conversion.setTotalMoney(totalMoney);
+		conversion.setTime(saveTime);
+		
+		conversionDao.insert(conversion);
+		
+		System.out.println("----------------------结束统计兑换收入---------------------");
 	}
 	
 	/**
