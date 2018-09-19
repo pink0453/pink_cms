@@ -11,7 +11,7 @@ guns:
 
 spring:
   profiles:
-    active: @spring.active@
+    active: local
   mvc:
     static-path-pattern: /static/**
     view:
@@ -88,7 +88,7 @@ spring:
 spring:
   data:
     mongodb:
-      uri: mongodb://tsyl_user:tsyl_mima@dds-2ze0e1f984ebfb64-pub.mongodb.rds.aliyuncs.com:3717/game_tsyl
+      uri: mongodb://tsyl_user:tsyl_mima@dds-2ze0e1f984ebfb64-pub.mongodb.rds.aliyuncs.com:3717/game_tsyl #mongodb://tsyl_online_2018:tsyl_2018@s-2zed4701d9e6f024-pub.mongodb.rds.aliyuncs.com:3717,s-2zeb8946715c0ea4-pub.mongodb.rds.aliyuncs.com:3717/game_tsyl?readPreference=secondaryPreferred&w=majority
 
 ---
 mybatis-plus:

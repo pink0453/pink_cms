@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stylefeng.guns.core.base.controller.BaseController;
 import com.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import com.stylefeng.guns.modular.mongoDao.CardDao;
+import com.stylefeng.guns.modular.mongoDao.GameBindDao;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_game_bind;
 import com.stylefeng.guns.modular.mongoModel.Mj_match_cards;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.model.User;
@@ -34,6 +36,8 @@ public class WebController extends BaseController {
 	private CardDao cardDao;
 	@Autowired
 	private PlayersDao playersDao;
+	@Autowired
+	private GameBindDao gameBindDao;
 	
 	/**
 	 * 返回代理详情
@@ -165,5 +169,39 @@ public class WebController extends BaseController {
 		
 		
 	}
+	
+    /**
+     * 记录用户扫码下载信息
+     */
+    @RequestMapping(value="/recBind")
+    @ResponseBody
+    public Object recBind() throws Exception{
+    	
+    	String gameAccountId = getPara("uid");
+    	
+    	if(gameAccountId != null && !gameAccountId.equals("")) {
+    		
+    		Integer uid = Integer.parseInt(gameAccountId);
+        	String ip = getPara("ip");
+        	
+        	//判断是否为代理
+        	User user = userService.getByGameAccountId(gameAccountId);
+        	if(user != null) {
+        		
+        		Mj_game_bind gameBind = new Mj_game_bind();
+//            	gameBind.setId(AppUtil.getUUID());
+            	gameBind.setUid(uid);
+            	gameBind.setIp(ip);
+            	gameBind.setCreatTime(System.currentTimeMillis() / 1000);
+            	
+            	gameBindDao.insert(gameBind);
+        		
+        	}
+    		
+    	}
+    	
+    	return "success";
+    	
+    }
 	
 }
