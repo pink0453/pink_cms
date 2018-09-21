@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.OrderRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.modular.system.model.OrderRecord">
+        <id column="ID" property="id" />
+        <result column="PRICE" property="price" />
+        <result column="PRODUCT_ID" property="productId" />
+        <result column="PRODUCT_AMOUNT" property="productAmount" />
+        <result column="PRODUCT_NAME" property="productName" />
+        <result column="AMOUNT" property="amount" />
+        <result column="USER_ID" property="userId" />
+        <result column="MY_CODE" property="myCode" />
+        <result column="NICKNAME" property="nickname" />
+        <result column="GAME_TYPE" property="gameType" />
+        <result column="AGENT_ID" property="agentId" />
+        <result column="AGENT_GAME_ID" property="agentGameId" />
+        <result column="FROM" property="from" />
+        <result column="STATUS" property="status" />
+        <result column="REMARK" property="remark" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="EDIT_TIME" property="editTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, PRICE, PRODUCT_ID, PRODUCT_AMOUNT, PRODUCT_NAME, AMOUNT, USER_ID, MY_CODE, NICKNAME, GAME_TYPE, AGENT_ID, AGENT_GAME_ID, 'FROM', STATUS, REMARK, CREATE_TIME, EDIT_TIME
+    </sql>
+    
+    <select id="getRecharges" resultType="map">
+		select 
+		<include refid="Base_Column_List" /> 
+		from rp_pay_order_record where 1 = 1
+		<if test="beginTime != null and beginTime !='' and endTime != null and endTime != ''">
+			and (CREATE_TIME between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+		</if>
+		<if test="userId != null and userId != 0">
+			and USER_ID = #{userId}
+		</if>
+		<choose>
+			<when test="orderByField != null and orderByField !=''">
+				<choose>
+					<when test="isAsc == true">
+						order by ${orderByField} ASC
+					</when>
+					<otherwise>
+						order by ${orderByField} DESC
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				order by CREATE_TIME DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getRechargeByIds" resultType="map">
+		select 
+		<include refid="Base_Column_List" /> 
+		from rp_pay_order_record where 1 = 1
+		<if test="beginTime != null and beginTime !='' and endTime != null and endTime != ''">
+			and (CREATE_TIME between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+		</if>
+		<if test="userId != null and userId != 0">
+			and USER_ID = #{userId}
+		</if>
+		and USER_ID in
+		<foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+        	#{id}
+   		</foreach>
+		<choose>
+			<when test="orderByField != null and orderByField !=''">
+				<choose>
+					<when test="isAsc == true">
+						order by ${orderByField} ASC
+					</when>
+					<otherwise>
+						order by ${orderByField} DESC
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				order by CREATE_TIME DESC
+			</otherwise>
+		</choose>
+	</select>
+
+</mapper>

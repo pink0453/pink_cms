@@ -1,0 +1,42 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="id" name="" value="${item.id}" underline="true"/>
+                            <#input id="price" name="" value="${item.price}" underline="true"/>
+                            <#input id="productId" name="" value="${item.productId}" underline="true"/>
+                            <#input id="productAmount" name="" value="${item.productAmount}" underline="true"/>
+                            <#input id="productName" name="" value="${item.productName}" underline="true"/>
+                            <#input id="amount" name="" value="${item.amount}" underline="true"/>
+                            <#input id="userId" name="" value="${item.userId}" underline="true"/>
+                            <#input id="myCode" name="" value="${item.myCode}" underline="true"/>
+                            <#input id="nickname" name="" value="${item.nickname}" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="gameType" name="" value="${item.gameType}" underline="true"/>
+                            <#input id="agentId" name="" value="${item.agentId}" underline="true"/>
+                            <#input id="agentGameId" name="" value="${item.agentGameId}" underline="true"/>
+                            <#input id="from" name="" value="${item.from}" underline="true"/>
+                            <#input id="status" name="" value="${item.status}" underline="true"/>
+                            <#input id="remark" name="" value="${item.remark}" underline="true"/>
+                            <#input id="createTime" name="" value="${item.createTime}" underline="true"/>
+                            <#input id="editTime" name="" value="${item.editTime}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="OrderAgentRecordInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="OrderAgentRecordInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/recharge/orderAgentRecord/orderAgentRecord_info.js"></script>
+@}

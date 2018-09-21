@@ -78,4 +78,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		return this.baseMapper.selectUsersByIds(ids);
 		
 	}
+
+	@Override
+	public List<User> getUsersByParentId(Integer id) {
+		// TODO Auto-generated method stub
+		
+		Map<String, Object> conMap = new HashMap<String, Object>();
+		conMap.put("parent_id", id);
+		List<User> users = this.selectByMap(conMap);
+		
+		return users;
+		
+	}
 }

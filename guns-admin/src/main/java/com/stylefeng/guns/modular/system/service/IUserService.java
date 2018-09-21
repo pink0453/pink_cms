@@ -54,12 +54,19 @@ public interface IUserService extends IService<User> {
     User getByGameAccountId(@Param("game_account_id") String gameAccountId);
     
     /**
-     * 根据当前登录用户查询旗下代理
+     * 递归根据当前登录用户查询旗下代理
      * @param users
      * @param curId
      * @return
      */
     List<User> getUsersByCurrentUser(List<User> allUsers, Integer curId);
+    
+    /**
+     * 通过父ID获取所有用户
+     * @param id
+     * @return
+     */
+    List<User> getUsersByParentId(Integer id);
     
     List<Map<String, Object>> getUsersByids(List<Integer> ids);
 
