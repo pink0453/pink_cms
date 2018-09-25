@@ -12,6 +12,20 @@ import java.util.List;
  */
 public interface IConstantFactory {
 
+	/**
+	 * 根据用户ID获取代理ID
+	 * @param id
+	 * @return
+	 */
+	int getAgentIdByPlayerId(Integer id);
+	
+	/**
+	 * 根据用户ID获取代理姓名
+	 * @param id
+	 * @return
+	 */
+	String getAgentNameByPlayerId(Integer id);
+	
     /**
      * 根据用户id获取用户名称
      *

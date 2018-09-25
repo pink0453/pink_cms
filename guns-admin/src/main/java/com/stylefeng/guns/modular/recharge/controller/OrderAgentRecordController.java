@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.stylefeng.guns.modular.system.model.OrderRecord;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
-import com.stylefeng.guns.modular.system.warpper.RechargePlayerWarpper;
+import com.stylefeng.guns.modular.system.warpper.RechargeAgentWarpper;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.recharge.service.IOrderRecordService;
@@ -84,45 +84,45 @@ public class OrderAgentRecordController extends BaseController {
     	
     	int type = 1;
     	
+    	List<Map<String, Object>> usersMap = new ArrayList<>();
     	Page<OrderRecord> page = new PageFactory<OrderRecord>().defaultPage();
-        List<Map<String, Object>> result = orderAgentRecordService.getRecharges(beginTime, endTime, playerId, page.getOrderByField(), page.isAsc(), type);
     	
-    	if(!ShiroKit.hasAnyRoles(ConstantUtil.ADMIN_ROLES)) {
-    		
-    		ShiroUser suser = ShiroKit.getUser();
-    		User currentUser = userService.selectById(suser.getId());
-    		//查询当前登录用户旗下所有代理
-    		List<User> users = userService.getUsersByParentId(currentUser.getId());
-    		
-    		for(User user : users) {
-    			
-    			Integer gameId = user.getGameAccountId();
-    			
-    			//查询当前登录用户旗下所有玩家集合
-        		List<Mj_players> players = playerDao.findPlayersByRef(gameId);
-        		List<Integer> ids = new ArrayList<>();
-        		for(Mj_players player : players) {
-        			
-        			ids.add(player.get_id());
-        			
-        		}
-        		ids.add(gameId);
-        		
-        		if(ids.size() > 0) {
-        			
-        			result = orderAgentRecordService.getRechargeByIds(ids, beginTime, endTime, playerId, page.getOrderByField(), page.isAsc(), type);
-        			
-        		}else {
-        			
-        			return null;
-        			
-        		}
-    			
-    		}
-    		
-    	}
-    	
-    	return new RechargePlayerWarpper(result).warp();
+		if(!ShiroKit.hasAnyRoles(ConstantUtil.ADMIN_ROLES)) {
+			
+			ShiroUser suser = ShiroKit.getUser();
+			User currentUser = userService.selectById(suser.getId());
+			Map<Integer, List<User>>  lvMap = userService.currentUsersLvList(currentUser);
+			
+			//直属代理集合
+			List<User> users = lvMap.get(1);
+			
+			for(User user : users) {
+				
+				
+				List<Mj_players> players = playerDao.findPlayersByRef(user.getId());
+	    		List<Integer> ids = new ArrayList<>();
+	    		for(Mj_players player : players) {
+	    			
+	    			ids.add(player.get_id());
+	    			
+	    		}
+	    		ids.add(user.getId());
+	    		
+	    		if(ids.size() > 0) {
+	    			
+	    			usersMap.addAll(orderAgentRecordService.getRechargeByIds(ids, beginTime, endTime, playerId, page.getOrderByField(), page.isAsc(), type));
+	    			
+	    		}
+				
+			}
+			
+		}else {
+			
+			usersMap = orderAgentRecordService.getRecharges(beginTime, endTime, playerId, page.getOrderByField(), page.isAsc(), type);
+			
+		}
+		
+    	return new RechargeAgentWarpper(usersMap).warp();
     	
     }
 

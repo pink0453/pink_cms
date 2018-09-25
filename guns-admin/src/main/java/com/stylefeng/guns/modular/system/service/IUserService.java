@@ -69,5 +69,12 @@ public interface IUserService extends IService<User> {
     List<User> getUsersByParentId(Integer id);
     
     List<Map<String, Object>> getUsersByids(List<Integer> ids);
-
+    
+    /**
+     * 获取当前用户下所有层级列表
+     * @param user
+     * @return
+     */
+    public Map<Integer, List<User>> currentUsersLvList(User user);
+    
 }

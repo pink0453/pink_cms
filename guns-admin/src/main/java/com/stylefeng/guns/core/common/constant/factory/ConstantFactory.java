@@ -6,6 +6,8 @@ import com.stylefeng.guns.core.common.constant.cache.Cache;
 import com.stylefeng.guns.core.common.constant.cache.CacheKey;
 import com.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import com.stylefeng.guns.core.common.constant.state.MenuStatus;
+import com.stylefeng.guns.modular.mongoDao.PlayersDao;
+import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.dao.*;
 import com.stylefeng.guns.modular.system.model.*;
 import com.stylefeng.guns.core.log.LogObjectHolder;
@@ -13,6 +15,8 @@ import com.stylefeng.guns.core.support.StrKit;
 import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.core.util.SpringContextHolder;
 import com.stylefeng.guns.core.util.ToolUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -36,11 +40,56 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
-
+    
+    @Autowired
+    private PlayersDao playersDao;
+    
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
     }
 
+    @Override
+	public int getAgentIdByPlayerId(Integer id) {
+		// TODO Auto-generated method stub
+		
+    	Mj_players player = playersDao.findPlayerByUid(id);
+		
+    	int refId = 0;
+    	
+    	if(player != null) {
+    		
+    		refId = player.getReferrer_uid();
+    		
+    	}
+    	
+		return refId;
+		
+	}
+
+
+
+	@Override
+	public String getAgentNameByPlayerId(Integer id) {
+		// TODO Auto-generated method stub
+		
+		Mj_players player = playersDao.findPlayerByUid(id);
+		
+    	String agentName = "";
+    	
+    	if(player != null) {
+    		
+    		User user = userMapper.getByGameAccountId(player.get_id()+"");
+    		if(user != null) {
+    			
+    			agentName = user.getName();
+    			
+    		}
+    		
+    	}
+    	
+		return agentName;
+	}
+    
     /**
      * 根据用户id获取用户名称
      *
@@ -328,6 +377,5 @@ public class ConstantFactory implements IConstantFactory {
         }
         return parentDeptIds;
     }
-
 
 }

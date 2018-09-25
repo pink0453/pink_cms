@@ -7,6 +7,7 @@ import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.IUserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		
 		return allUsers;
 	}
-
+	
 	@Override
 	public List<Map<String, Object>> getUsersByids(List<Integer> ids) {
 		// TODO Auto-generated method stub
@@ -90,4 +91,70 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		return users;
 		
 	}
+	
+	/**
+	 * 层级划分代理列表
+	 * @param user
+	 * @return
+	 */
+	public Map<Integer, List<User>> currentUsersLvList(User user){
+		
+		//key:0代表自己
+		Map<Integer, List<User>> lvMap = new HashMap<>();
+		
+		List<User> currentUser = new ArrayList<>();
+		currentUser.add(user);
+		lvMap.put(0, currentUser);
+		
+		return getLvUsersByCurrentUser(lvMap, user.getId(), 1);
+		
+	}
+	
+	/**
+	 * 查询代理层级列表
+	 * @param lvUsers
+	 * @param curId
+	 * @param lv
+	 * @return
+	 */
+	public Map<Integer, List<User>>  getLvUsersByCurrentUser(Map<Integer, List<User>> lvUsers, Integer curId, int lv) {
+		// TODO Auto-generated method stub
+		
+		List<User> users = getUsersByParentId(curId);
+		
+		if(users != null && users.size() > 0) {
+			
+			lvUsers.put(lv, users);
+			
+			while(true) {
+				
+				List<User> tmpUsers = new ArrayList<>();
+				
+				for(int i = 0; i < users.size(); i++) {
+					
+					tmpUsers.addAll(getUsersByParentId(users.get(i).getId()));
+					
+				}
+				
+				if(tmpUsers.size() > 0) {
+					
+					lv = lv + 1;
+					lvUsers.put(lv, tmpUsers);
+					
+					users = new ArrayList<>();
+					users = tmpUsers;
+					
+				}else {
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
+		
+		return lvUsers;
+	}
+	
 }
