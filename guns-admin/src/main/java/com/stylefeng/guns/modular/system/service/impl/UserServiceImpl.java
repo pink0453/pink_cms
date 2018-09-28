@@ -156,5 +156,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		
 		return lvUsers;
 	}
+
+	@Override
+	public int updateFanli(Integer userId, float fanli) {
+		// TODO Auto-generated method stub
+		
+		return this.baseMapper.updateFanli(userId, fanli);
+		
+	}
 	
 }

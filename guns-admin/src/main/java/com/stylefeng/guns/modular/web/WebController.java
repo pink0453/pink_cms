@@ -147,7 +147,7 @@ public class WebController extends BaseController {
 	}
 	
 	/**
-	 * 通过获取玩家信息
+	 * 通过游戏ID获取玩家信息
 	 * @return
 	 */
 	@RequestMapping(value="/getPlayerInfo")
@@ -201,6 +201,27 @@ public class WebController extends BaseController {
     	}
     	
     	return "success";
+    	
+    }
+    
+    /**
+     * 更新返利
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/updateFanli")
+    @ResponseBody
+    public Object updateFanli() throws Exception{
+    	
+    	String amountStr = getPara("amount");
+    	String uidStr = getPara("uid");
+    	
+    	float amount = Float.parseFloat(amountStr);
+    	Integer uid = Integer.parseInt(uidStr);
+    	
+    	int status = userService.updateFanli(uid, amount);
+    	
+    	return status;
     	
     }
 	

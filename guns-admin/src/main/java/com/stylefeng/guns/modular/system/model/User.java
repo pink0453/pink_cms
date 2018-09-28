@@ -123,7 +123,18 @@ public class User extends Model<User> {
      * 保留字段
      */
     private Integer version;
+    /**
+     * 返利余额
+     */
+    private float fanli;
 
+	public float getFanli() {
+		return fanli;
+	}
+
+	public void setFanli(float fanli) {
+		this.fanli = fanli;
+	}
 
 	public Integer getId() {
 		return id;

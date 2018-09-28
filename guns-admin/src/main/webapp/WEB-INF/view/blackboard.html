@@ -20,18 +20,18 @@
                                         <#input id="name" name="代理真实姓名" underline="true" value="${user.name}" disabled="disabled"/>
                                         <#input id="phone" name="手机号" underline="true" value="${user.phone}" disabled="disabled"/>
                                         <#input id="parentId" name="上级代理" underline="true" value="${user.parentId}" disabled="disabled"/>
-                                        <#input id="playersNum" name="直系玩家数" underline="true" value="" disabled="disabled"/>
+                                        <#input id="playersNum" name="直系玩家数" underline="true" value="${playerCount}" disabled="disabled"/>
                                         <#input id="createTime" name="注册代理时间" underline="true" value="${user.createtime}" disabled="disabled"/>
                                         <#input id="loginIP" name="最近登录IP" underline="true" value="" disabled="disabled"/>
                                     </div>
 
                                     <div class="col-sm-6 b-r">
                                         <div id="driverInfoContent">
-                                            <#input id="agentId" name="代理ID" underline="true" type="${user.id}" value="" disabled="disabled"/>
-                                            <#input id="lv" name="代理等级" underline="true" value="${user.roleid}" disabled="disabled"/>
+                                            <#input id="agentId" name="代理ID" underline="true" value="${user.id}" disabled="disabled"/>
+                                            <#input id="lv" name="代理等级" underline="true" value="${roleName}" disabled="disabled"/>
                                             <#input id="weChat" name="微信" underline="true" value="${user.wx}" disabled="disabled"/>
-                                            <#input id="childNum" name="下级代理数" underline="true" value="" disabled="disabled"/>
-                                            <#input id="status" name="代理状态" underline="true" value="${user.status}" disabled="disabled"/>
+                                            <#input id="childNum" name="下级代理数" underline="true" value="${agentCount}" disabled="disabled"/>
+                                            <#input id="status" name="代理状态" underline="true" value="${statusName}" disabled="disabled"/>
                                             <#input id="lastLoginTime" name="最近登录时间" underline="true" value="${user.lastLogin}" disabled="disabled"/>
                                             <#input id="area" name="地区" underline="true" value="" disabled="disabled"/>
                                         </div>
@@ -59,8 +59,8 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 b-r">
-                                        <#input id="amount" name="可提现金额" underline="true" value="" disabled="disabled" />
-                                        <#input id="takeAmount" name="提现金额" underline="true" value="" disabled="disabled"/>
+                                        <#input id="amount" name="可提现金额" underline="true" value="${user.fanli}" disabled="disabled" />
+                                        <#input id="takeAmount" name="已提现金额" underline="true" value="" disabled="disabled"/>
                                         <#input id="toType" name="到账类型" underline="true" value="" disabled="disabled"/>
                                         <#input id="bankCardType" name="银行卡绑定类型" underline="true" value="" disabled="disabled"/>
                                         <#input id="bankName" name="收款银行" underline="true" value="" disabled="disabled"/>

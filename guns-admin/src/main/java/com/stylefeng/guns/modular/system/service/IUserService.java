@@ -77,4 +77,12 @@ public interface IUserService extends IService<User> {
      */
     public Map<Integer, List<User>> currentUsersLvList(User user);
     
+    /**
+     * 更新返利
+     * @param userId
+     * @param fanli
+     * @return
+     */
+    public int updateFanli(Integer userId, float fanli);
+    
 }

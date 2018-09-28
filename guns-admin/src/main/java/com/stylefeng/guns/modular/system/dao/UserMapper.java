@@ -49,5 +49,14 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     User getByGameAccountId(@Param("game_account_id") String account);
+    
     List<Map<String, Object>> selectUsersByIds(List<Integer> ids);
+    
+    /**
+     * 更新返利
+     * @param userId
+     * @param fanli
+     * @return
+     */
+    int updateFanli(@Param("userId") Integer userId, @Param("fanli") float fanli);
 }
