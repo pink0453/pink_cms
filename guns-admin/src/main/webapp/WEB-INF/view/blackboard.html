@@ -57,16 +57,21 @@
                                 <input type="hidden" id="id" value="">
                                 <input type="hidden" id="sexValue" value="">
 
-                                <div class="row">
+                                <div class="row" id="bankForm">
                                     <div class="col-sm-6 b-r">
                                         <#input id="amount" name="可提现金额" underline="true" value="${user.fanli}" disabled="disabled" />
-                                        <#input id="takeAmount" name="已提现金额" underline="true" value="" disabled="disabled"/>
-                                        <#input id="toType" name="到账类型" underline="true" value="" disabled="disabled"/>
-                                        <#input id="bankCardType" name="银行卡绑定类型" underline="true" value="" disabled="disabled"/>
-                                        <#input id="bankName" name="收款银行" underline="true" value="" disabled="disabled"/>
-                                        <#input id="bankCard" name="银行卡号" underline="true" value="" disabled="disabled"/>
-                                        <#input id="reBankCard" name="确认银行卡号" underline="true" value="" disabled="disabled"/>
-                                        <#input id="takeMoney" name="提款金额" underline="true" value="" disabled="disabled"/>
+                                        <#input id="takeAmount" name="已提现金额" underline="true" value="${amount}" disabled="disabled"/>
+                                        <#input id="toType" name="到账类型" underline="true" value="银行卡" disabled="disabled"/>
+                                        <#input id="bindName" name="银行卡绑定姓名" underline="true" value=""/>
+                                        <#select id="bankName" name="收款银行" underline="true">
+				                        	<option value="1">工商银行</option>
+				                        	<option value="2">招商银行</option>
+				                        	<option value="3">建设银行</option>
+				                        	<option value="4">中国银行</option>
+										</#select>
+                                        <#input id="bankCard" name="银行卡号" underline="true" value="" />
+                                        <#input id="reBankCard" name="确认银行卡号" underline="true" value="" />
+                                        <#input id="takeMoney" name="提款金额" underline="true" value=""/>
                                     </div>
                                 </div>
 								
@@ -77,7 +82,7 @@
 
                                 <div class="row btn-group-m-t">
                                     <div class="col-sm-10">
-                                        <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="UserInfoDlg.editSubmit()"/>
+                                        <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="submitCommit()"/>
                                     </div>
                                 </div>
                                 
@@ -89,4 +94,134 @@
         </div>
 	</div>
 </div>
+<script>
+	function submitCommit() {
+		
+		var toType = "1";
+		var name = $("#bindName").val();
+		var bankName = $("#bankName").val();
+		var bankCard = $("#bankCard").val();
+		var reBankCard = $("#reBankCard").val();
+		var takeMoney = $("#takeMoney").val();
+		var bankName = $("#bankName").val();
+		
+		if(toType != "" && name != "" && bankName != "" && bankCard != "" && reBankCard != "" && takeMoney != ""){
+			
+			if(validateReBankCard(bankCard, reBankCard)){
+				
+				if(validationNumber(takeMoney)){
+					
+					var param = {"bankCard" : bankCard, "amount" : takeMoney, "name" : name, "bankType" : bankName};
+					
+					//提交信息
+				    var ajax = new $ax(Feng.ctxPath + "/drawingsRecord/add", function(data){
+				        Feng.success(data);
+				    },function(data){
+				        Feng.error("添加失败!" + data.responseJSON.message + "!");
+				    });
+				    ajax.set(param);
+				    ajax.start();
+					
+				}else{
+					
+					Feng.error("请输入正确的金额");
+					
+				}
+				
+			}else{
+				
+				Feng.error("请输入正确格式的银行卡");
+				
+			}
+			
+		}else {
+			
+			Feng.error("请填写所有内容");
+			
+		}
+		
+	}
+	
+	//验证数字和小数
+	function validationNumber(str) {
+        var reg = /^\d+(\.\d+)?$/;
+        return reg.test(str)
+    }
+	
+	//验证银行卡号
+	function validateReBankCard(bankCard, reBankCard){
+		
+		if(bankCard != reBankCard){
+			
+			Feng.error("两次银行卡号输入不一致");
+			return false;
+			
+		}else{
+			
+			return luhnCheck(bankCard);
+			
+		}
+		
+	}
+	
+	//银行卡号码检测
+	function luhnCheck(bankno) {
+	    var lastNum = bankno.substr(bankno.length - 1, 1); //取出最后一位（与luhn进行比较）
+	    var first15Num = bankno.substr(0, bankno.length - 1); //前15或18位
+	    var newArr = new Array();
+	    for (var i = first15Num.length - 1; i > -1; i--) { //前15或18位倒序存进数组
+	        newArr.push(first15Num.substr(i, 1));
+	    }
+	    var arrJiShu = new Array(); //奇数位*2的积 <9
+	    var arrJiShu2 = new Array(); //奇数位*2的积 >9
+	    var arrOuShu = new Array(); //偶数位数组
+	    for (var j = 0; j < newArr.length; j++) {
+	        if ((j + 1) % 2 == 1) { //奇数位
+	            if (parseInt(newArr[j]) * 2 < 9) arrJiShu.push(parseInt(newArr[j]) * 2);
+	            else arrJiShu2.push(parseInt(newArr[j]) * 2);
+	        } else //偶数位
+	        arrOuShu.push(newArr[j]);
+	    }
+
+	    var jishu_child1 = new Array(); //奇数位*2 >9 的分割之后的数组个位数
+	    var jishu_child2 = new Array(); //奇数位*2 >9 的分割之后的数组十位数
+	    for (var h = 0; h < arrJiShu2.length; h++) {
+	        jishu_child1.push(parseInt(arrJiShu2[h]) % 10);
+	        jishu_child2.push(parseInt(arrJiShu2[h]) / 10);
+	    }
+
+	    var sumJiShu = 0; //奇数位*2 < 9 的数组之和
+	    var sumOuShu = 0; //偶数位数组之和
+	    var sumJiShuChild1 = 0; //奇数位*2 >9 的分割之后的数组个位数之和
+	    var sumJiShuChild2 = 0; //奇数位*2 >9 的分割之后的数组十位数之和
+	    var sumTotal = 0;
+	    for (var m = 0; m < arrJiShu.length; m++) {
+	        sumJiShu = sumJiShu + parseInt(arrJiShu[m]);
+	    }
+
+	    for (var n = 0; n < arrOuShu.length; n++) {
+	        sumOuShu = sumOuShu + parseInt(arrOuShu[n]);
+	    }
+
+	    for (var p = 0; p < jishu_child1.length; p++) {
+	        sumJiShuChild1 = sumJiShuChild1 + parseInt(jishu_child1[p]);
+	        sumJiShuChild2 = sumJiShuChild2 + parseInt(jishu_child2[p]);
+	    }
+	    //计算总和
+	    sumTotal = parseInt(sumJiShu) + parseInt(sumOuShu) + parseInt(sumJiShuChild1) + parseInt(sumJiShuChild2);
+
+	    //计算luhn值
+	    var k = parseInt(sumTotal) % 10 == 0 ? 10 : parseInt(sumTotal) % 10;
+	    var luhn = 10 - k;
+
+	    if (lastNum == luhn) {
+	        $("#banknoInfo").html("luhn验证通过");
+	        return true;
+	    } else {
+	        $("#banknoInfo").html("银行卡号必须符合luhn校验");
+	        return false;
+	    }
+	}
+
+</script>
 @}

@@ -306,6 +306,17 @@ AgentInfoDlg.editSubmit = function() {
     this.clearData();
     this.collectData();
 
+    if (!this.validate()) {
+        return;
+    }
+
+    if(!this.validateRate()){
+    	
+//    	Feng.error("反水率不在正确范围之内");
+        return;
+    	
+    }
+    
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/agent/update", function(data){
         Feng.success("修改成功!");
@@ -316,6 +327,7 @@ AgentInfoDlg.editSubmit = function() {
     });
     ajax.set(this.agentInfoData);
     ajax.start();
+    
 }
 
 $(function() {

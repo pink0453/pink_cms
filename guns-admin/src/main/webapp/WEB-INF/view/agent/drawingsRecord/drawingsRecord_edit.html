@@ -1,0 +1,37 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="id" name="" value="${item.id}" underline="true"/>
+                            <#input id="amount" name="提现金额" value="${item.amount}" underline="true"/>
+                            <#input id="commision" name="手续费" value="${item.commision}" underline="true"/>
+                            <#input id="rate" name="费率" value="${item.rate}" underline="true"/>
+                            <#input id="userId" name="提现用户" value="${item.userId}" underline="true"/>
+                            <#input id="status" name="状态" value="${item.status}" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="createTime" name="提现时间" value="${item.createTime}" underline="true"/>
+                            <#input id="updateTime" name="更新时间" value="${item.updateTime}" underline="true"/>
+                            <#input id="type" name="类型" value="${item.type}" underline="true"/>
+                            <#input id="name" name="银行卡绑定姓名" value="${item.name}" underline="true"/>
+                            <#input id="bankCard" name="银行卡账号" value="${item.bankCard}" underline="true"/>
+                            <#input id="bankType" name="银行卡类型" value="${item.bankType}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="DrawingsRecordInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="DrawingsRecordInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/agent/drawingsRecord/drawingsRecord_info.js"></script>
+@}

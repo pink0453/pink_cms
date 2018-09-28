@@ -6,9 +6,10 @@ import com.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.core.exception.GunsException;
 import com.stylefeng.guns.core.shiro.ShiroKit;
 import com.stylefeng.guns.core.util.ToolUtil;
+import com.stylefeng.guns.modular.agent.service.IDrawingsRecordService;
 import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
-import com.stylefeng.guns.modular.mongoModel.Mj_stat_agent_fl;
+import com.stylefeng.guns.modular.system.model.DrawingsRecord;
 import com.stylefeng.guns.modular.system.model.User;
 import com.stylefeng.guns.modular.system.service.INoticeService;
 import com.stylefeng.guns.modular.system.service.IUserService;
@@ -38,6 +39,8 @@ public class BlackboardController extends BaseController {
     private IUserService userService;
     @Autowired
     private PlayersDao playersDao;
+    @Autowired
+    private IDrawingsRecordService drawingsRecordService;
 
     /**
      * 跳转到黑板
@@ -86,6 +89,16 @@ public class BlackboardController extends BaseController {
 			 }
 			 
 		}
+        
+        //总提现金额
+        float amount = 0;
+        List<DrawingsRecord> drawingsRecords = drawingsRecordService.getDrawingsByUserId(user.getId());
+        for(DrawingsRecord drawingsRecord : drawingsRecords) {
+        	
+        	amount = amount + drawingsRecord.getAmount();
+        	
+        }
+        model.addAttribute("amount", amount);
         
         //状态
         model.addAttribute("statusName", ConstantFactory.me().getStatusName((Integer) user.getStatus()));
