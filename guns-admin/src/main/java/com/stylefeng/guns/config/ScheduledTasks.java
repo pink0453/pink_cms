@@ -586,9 +586,9 @@ public class ScheduledTasks {
 		
 		if(system != null && robot != null && conversion != null) {
 			
-			conversionMoney = system;
+			conversionMoney = conversion;
 			waterMoney = robot;
-			robotMoney = conversion;
+			robotMoney = system;
 			
 			totalMoney = conversionMoney + waterMoney + robotMoney;
 			
