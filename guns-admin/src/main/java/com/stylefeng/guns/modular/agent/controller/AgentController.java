@@ -29,6 +29,8 @@ import com.stylefeng.guns.core.shiro.ShiroUser;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
+import com.stylefeng.guns.modular.club.service.IClubService;
+import com.stylefeng.guns.modular.mongoModel.Club;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.factory.UserFactory;
 import com.stylefeng.guns.modular.system.model.User;
@@ -54,6 +56,8 @@ public class AgentController extends BaseController {
     private IPlayerService playerService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IClubService clubService;
 
     /**
      * 跳转到首页
@@ -169,7 +173,17 @@ public class AgentController extends BaseController {
 		agent.setParentId(currentUser.getId());
 		
         this.agentService.insert(UserFactory.createUser(agent));
-//        agentService.insert(agent);
+        
+        //默认添加一个俱乐部
+        String clubName = "俱乐部A";
+        String clubLogo =  "";
+        String noticeText = "";
+        String noticeImgUrl = "";
+        String synopsis = "";
+        String shareUrl = "";
+        Club club = new Club(clubName, clubLogo, noticeText, noticeImgUrl, synopsis, agent.getGameAccountId(), 1, 6, 200, false, true, shareUrl, System.currentTimeMillis() / 1000);
+        
+        clubService.createClub(club, agent.getGameAccountId());
         
         return SUCCESS_TIP;
     }

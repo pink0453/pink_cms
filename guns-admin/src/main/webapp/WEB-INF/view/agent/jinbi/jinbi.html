@@ -1,0 +1,127 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>金币修改管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="hidden-xs" id="JinbiTableToolbar" role="group">
+                            @if(shiro.hasPermission("/jinbi/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="Jinbi.openAddJinbi()"/>
+                            @}
+                            @if(shiro.hasPermission("/jinbi/update")){
+                                <#button name="修改" icon="fa-edit" clickFun="Jinbi.openJinbiDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/jinbi/delete")){
+                                <#button name="删除" icon="fa-remove" clickFun="Jinbi.delete()" space="true"/>
+                            @}
+                        </div>
+                        
+                        <div class="row">
+                            	当前余额:${amount}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#NameCon id="agentId" name="代理ID" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#NameCon id="agentAmount" name="数量" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="代理金币修改提交" icon="" clickFun="updateJibi(0)"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#NameCon id="playerId" name="玩家ID" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#NameCon id="playerAmount" name="数量" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="玩家金币修改提交" icon="" clickFun="updateJibi(1)"/>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/agent/jinbi/jinbi.js"></script>
+<script>
+
+function updateJibi(type){
+	
+	var agentId = $("#agentId").val();
+	var agentAmount = $("#agentAmount").val();
+	
+	var playerId = $("#playerId").val();
+	var playerAmount = $("#playerAmount").val();
+	
+	var param;
+	
+	if(type == 0){//代理修改金币
+		
+		if(!validationID(agentId) && !validationIAmount(agentAmount)){
+			return
+		}
+	
+		param = {"id" : agentId, "amount" : agentAmount, "type" : type};
+		
+	}else if(type == 1){//玩家修改金币
+		
+		if(!validationID(playerId) && !validationIAmount(playerAmount)){
+			return
+		}
+		
+		param = {"id" : playerId, "amount" : playerAmount, "type" : type};
+		
+	}
+		
+	//提交信息
+    var ajax = new $ax(Feng.ctxPath + "/jinbi/add", function(data){
+    	if(data == 1){
+    		Feng.success("修改成功");
+    	}else if(data == 2){
+    		Feng.error("余额不足");
+    	}else{
+    		Feng.error("修改失败,请检查ID是否正确");
+    	}
+        
+    },function(data){
+        Feng.error("修改失败!" + data.responseJSON.message + "!");
+    });
+    ajax.set(param);
+    ajax.start();
+	
+}
+
+//验证ID
+function validationID(num) {
+	var reg = /^\d+$/;
+	if(num.length > 5 || !reg.test(num)){
+		Feng.error("请输入正确的ID格式")
+		return false;
+	}
+	return true;
+}
+
+//验证金额 可以为负数
+function validationIAmount(num) {
+	var reg = /^-?\d+$/;
+	if(num.length > 12 || !reg.test(num)){
+		Feng.error("请输入正确的金币格式")
+		return false;
+	}
+	return true;
+}
+	
+</script>
+@}

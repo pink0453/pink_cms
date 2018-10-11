@@ -59,4 +59,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     int updateFanli(@Param("userId") Integer userId, @Param("fanli") float fanli);
+    
+    /**
+     * 更新金币
+     * @param userId
+     * @param jinbi
+     * @return
+     */
+    int updateJinbi(@Param("userId") Integer userId, @Param("jinbi") Integer jinbi);
 }

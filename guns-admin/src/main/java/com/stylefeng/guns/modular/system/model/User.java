@@ -127,6 +127,19 @@ public class User extends Model<User> {
      * 返利余额
      */
     private float fanli;
+    
+    /**
+     * 金币余额
+     */
+    private Integer jinbi;
+
+	public Integer getJinbi() {
+		return jinbi;
+	}
+
+	public void setJinbi(Integer jinbi) {
+		this.jinbi = jinbi;
+	}
 
 	public float getFanli() {
 		return fanli;

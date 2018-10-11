@@ -31,11 +31,11 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version,fanli
+		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version,fanli,jinbi
 	</sql>
 
 	<sql id="Base_Column_List_With_Pwd">
-		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version,fanli
+		id, avatar, account, password, salt, name, birthday, sex, email, phone, roleid, deptid, status, createtime, rights, last_login, bz, skin, game_ids, wx, rate, game_account_id, parent_id, version,fanli,jinbi
 	</sql>
 
 	<select id="selectUsers" resultType="map">
@@ -96,6 +96,10 @@
 	
 	<update id="updateFanli">
 		update sys_user set fanli = fanli + #{fanli} where game_account_id = #{userId}
+	</update>
+	
+	<update id="updateJinbi">
+		update sys_user set jinbi = jinbi + #{jinbi} where id = #{userId}
 	</update>
 
 </mapper>

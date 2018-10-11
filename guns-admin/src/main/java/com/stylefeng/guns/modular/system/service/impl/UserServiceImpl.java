@@ -160,9 +160,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 	@Override
 	public int updateFanli(Integer userId, float fanli) {
 		// TODO Auto-generated method stub
-		
 		return this.baseMapper.updateFanli(userId, fanli);
-		
+	}
+
+	@Override
+	public int updateJinbi(Integer userId, Integer jinbi) {
+		// TODO Auto-generated method stub
+		return this.baseMapper.updateJinbi(userId, jinbi);
 	}
 	
 }

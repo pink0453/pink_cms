@@ -2,6 +2,7 @@ package com.stylefeng.guns.modular.mongoDao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Update;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

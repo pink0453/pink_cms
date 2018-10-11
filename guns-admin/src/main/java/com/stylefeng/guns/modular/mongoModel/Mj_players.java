@@ -1,5 +1,8 @@
 package com.stylefeng.guns.modular.mongoModel;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * <p>
  * 
@@ -33,8 +36,20 @@ public class Mj_players {
 	private long last_share_time;
 	private int hongbao;
 	private int jinbi;
+	
+	private ArrayList<Map<Object, Object>> clubs; 
+	
+	
 
-    public String getLastLoginTime() {
+    public ArrayList<Map<Object, Object>> getClubs() {
+		return clubs;
+	}
+
+	public void setClubs(ArrayList<Map<Object, Object>> clubs) {
+		this.clubs = clubs;
+	}
+
+	public String getLastLoginTime() {
         return lastLoginTime;
     }
 

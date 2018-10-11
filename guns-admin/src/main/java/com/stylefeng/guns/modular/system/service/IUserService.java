@@ -85,4 +85,12 @@ public interface IUserService extends IService<User> {
      */
     public int updateFanli(Integer userId, float fanli);
     
+    /**
+     * 更新金币
+     * @param userId
+     * @param jinbi
+     * @return
+     */
+    public int updateJinbi(Integer userId, Integer jinbi);
+    
 }
