@@ -288,7 +288,13 @@ AgentInfoDlg.addSubmit = function() {
 
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/agent/add", function(data){
-        Feng.success("添加成功!");
+    	
+    	if(data == 0){
+    		 Feng.success("添加成功!");
+    	}else{
+    		Feng.error("添加失败!" + "无此游戏ID" + "!");
+    	}
+    	
         window.parent.Agent.table.refresh();
         AgentInfoDlg.close();
     },function(data){

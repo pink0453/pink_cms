@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stylefeng.guns.modular.agent.service.IPlayerService;
 import com.stylefeng.guns.modular.club.service.IClubService;
+import com.stylefeng.guns.modular.mongoDao.PlayersDao;
 import com.stylefeng.guns.modular.mongoModel.Club;
 import com.stylefeng.guns.modular.mongoModel.Mj_players;
 import com.stylefeng.guns.modular.system.factory.UserFactory;
@@ -58,6 +59,8 @@ public class AgentController extends BaseController {
     private IUserService userService;
     @Autowired
     private IClubService clubService;
+    @Autowired
+    private PlayersDao playerDao;
 
     /**
      * 跳转到首页
@@ -160,32 +163,41 @@ public class AgentController extends BaseController {
         if (theUser != null) {
             throw new GunsException(BizExceptionEnum.USER_ALREADY_REG);
         }
+        
+        if(playerDao.findPlayerByUid(agent.getGameAccountId()) != null) {
+        	
+        	 // 完善账号信息
+            agent.setSalt(ShiroKit.getRandomSalt(5));
+            agent.setPassword(ShiroKit.md5(agent.getPassword(), agent.getSalt()));
+            agent.setStatus(ManagerStatus.OK.getCode());
+            agent.setCreatetime(new Date());
+            agent.setDeptid(28);//默认新增代理部门为代理部
+            
+            ShiroUser suser = ShiroKit.getUser();
+    		User currentUser = userService.selectById(suser.getId());
+    		agent.setParentId(currentUser.getId());
+    		
+            this.agentService.insert(UserFactory.createUser(agent));
+            
+            //默认添加一个俱乐部
+            String clubName = "俱乐部A";
+            String clubLogo =  "";
+            String noticeText = "";
+            String noticeImgUrl = "";
+            String synopsis = "";
+            String shareUrl = "";
+            Club club = new Club(clubName, clubLogo, noticeText, noticeImgUrl, synopsis, agent.getGameAccountId(), 1, 6, 200, false, true, shareUrl, System.currentTimeMillis() / 1000);
+            
+            clubService.createClub(club, agent.getGameAccountId());
+        	
+            return 0;
+            
+        }else {
+        	
+        	return 1;
+        	
+        }
 
-        // 完善账号信息
-        agent.setSalt(ShiroKit.getRandomSalt(5));
-        agent.setPassword(ShiroKit.md5(agent.getPassword(), agent.getSalt()));
-        agent.setStatus(ManagerStatus.OK.getCode());
-        agent.setCreatetime(new Date());
-        agent.setDeptid(28);//默认新增代理部门为代理部
-        
-        ShiroUser suser = ShiroKit.getUser();
-		User currentUser = userService.selectById(suser.getId());
-		agent.setParentId(currentUser.getId());
-		
-        this.agentService.insert(UserFactory.createUser(agent));
-        
-        //默认添加一个俱乐部
-        String clubName = "俱乐部A";
-        String clubLogo =  "";
-        String noticeText = "";
-        String noticeImgUrl = "";
-        String synopsis = "";
-        String shareUrl = "";
-        Club club = new Club(clubName, clubLogo, noticeText, noticeImgUrl, synopsis, agent.getGameAccountId(), 1, 6, 200, false, true, shareUrl, System.currentTimeMillis() / 1000);
-        
-        clubService.createClub(club, agent.getGameAccountId());
-        
-        return SUCCESS_TIP;
     }
 
     /**

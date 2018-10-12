@@ -89,7 +89,7 @@ spring:
 spring:
   data:
     mongodb:
-      uri: mongodb://tsyl_user:tsyl_mima@dds-2ze0e1f984ebfb64-pub.mongodb.rds.aliyuncs.com:3717/game_tsyl
+      uri: mongodb://root:tsyl_2018@dds-2ze9bab53a9d4b041565-pub.mongodb.rds.aliyuncs.com:3717,dds-2ze9bab53a9d4b042532-pub.mongodb.rds.aliyuncs.com:3717/admin?replicaSet=mgset-9288429
       database: game_tsyl
 
 ---
