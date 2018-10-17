@@ -31,8 +31,8 @@ OrderAgentRecord.initColumn = function () {
 //            {title: '', field: 'from', visible: true, align: 'center', valign: 'middle'},
 //            {title: '', field: 'status', visible: true, align: 'center', valign: 'middle'},
 //            {title: '', field: 'remark', visible: true, align: 'center', valign: 'middle'},
-            {title: '充值时间', field: 'CREATE_TIME', visible: true, align: 'center', valign: 'middle', sortable: true},
-            {title: '更新时间', field: 'EDIT_TIME', visible: true, align: 'center', valign: 'middle', sortable: true}
+            {title: '充值时间', field: 'CREATETIME', visible: true, align: 'center', valign: 'middle', sortable: true},
+            {title: '更新时间', field: 'UPDATETIME', visible: true, align: 'center', valign: 'middle', sortable: true}
     ];
 };
 

@@ -61,10 +61,9 @@ Agent.openAddAgent = function () {
     var index = layer.open({
         type: 2,
         title: '添加',
-        area: ['330px', '420px'], //宽高
+        area: ['800px', '420px'], //宽高
         fix: false, //不固定
-        maxmin: false,
-        moveOut:true,
+        maxmin: true,
         content: Feng.ctxPath + '/agent/agent_add'
     });
     this.layerIndex = index;

@@ -152,21 +152,21 @@ public class JinbiController extends BaseController {
 	    				
 	    			}
 	    			
-	    			if(isHave) {
-	    				
-	    				//修改玩家金币
-	    				Query query = Query.query(Criteria.where("_id").is(id));
-	    				Update update = new Update().inc("jinbi", amount);
-	    				mongoTemplate.updateFirst(query, update, "mj_players");
-	    				
-	    				//修改自己金币
-	    				userService.updateJinbi(currentUser.getId(), -amount);
-	    				
-	    				status = 1;
-	    				
-	    			}
-	    			
 	    		}
+	    		
+	    		if(isHave) {
+    				
+    				//修改玩家金币
+    				Query query = Query.query(Criteria.where("_id").is(id));
+    				Update update = new Update().inc("jinbi", amount);
+    				mongoTemplate.updateFirst(query, update, "mj_players");
+    				
+    				//修改自己金币
+    				userService.updateJinbi(currentUser.getId(), -amount);
+    				
+    				status = 1;
+    				
+    			}
 	    		
 	    	}
 			
